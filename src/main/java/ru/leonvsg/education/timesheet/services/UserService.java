@@ -9,11 +9,15 @@ import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
+import ru.leonvsg.education.timesheet.entities.Course;
+import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +62,7 @@ public class UserService {
     }
 
     public String authenticate(String login, String password){
+        if (login == null || password == null) return null;
         UserDAO userDAO = new JDBCUserDAO(connectionManager);
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
@@ -99,10 +104,8 @@ public class UserService {
         return Role.valueOf(user.getRole());
     }
 
-    public class VerifyUserException extends RuntimeException {
-
-        public VerifyUserException(String message) {
-            super(message);
-        }
+    public Map<Group, Course> getCourses(User user){
+        if (user == null) return null;
+        return new JDBCUserDAO(connectionManager).getCourses(user);
     }
 }

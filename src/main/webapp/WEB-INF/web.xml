@@ -24,4 +24,14 @@
         <url-pattern>/user/auth</url-pattern>
     </servlet-mapping>
 
+    <display-name>List of courses</display-name>
+    <servlet>
+        <servlet-name>list_course</servlet-name>
+        <servlet-class>ru.leonvsg.education.timesheet.servlets.ListCourseServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>list_course</servlet-name>
+        <url-pattern>/courses</url-pattern>
+    </servlet-mapping>
+
 </web-app>

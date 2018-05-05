@@ -13,7 +13,7 @@ import java.io.IOException;
 public class RegisterUserServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         UserService userService = new UserService();
