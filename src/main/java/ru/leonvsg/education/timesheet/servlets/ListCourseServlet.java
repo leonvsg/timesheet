@@ -27,6 +27,12 @@ public class ListCourseServlet extends HttpServlet {
             return;
         }
         User user = userService.authenticate(token);
+        if (user == null){
+            json.put("result", "failed");
+            json.put("error", "Invalid token");
+            resp.getWriter().println(json.toString());
+            return;
+        }
         JSONArray jsonArray = new JSONArray();
         userService.getCourses(user).forEach((group, course) -> {
             JSONObject jsonCourse = new JSONObject();
