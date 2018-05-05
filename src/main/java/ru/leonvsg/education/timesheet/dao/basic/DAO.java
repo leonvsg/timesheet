@@ -1,4 +1,4 @@
-package ru.education.timesheet.DAO.Basic;
+package ru.leonvsg.education.timesheet.dao.basic;
 
 import java.sql.SQLException;
 import java.util.List;

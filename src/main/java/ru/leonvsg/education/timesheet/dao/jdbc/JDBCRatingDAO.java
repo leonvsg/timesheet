@@ -1,11 +1,8 @@
-package ru.education.timesheet.DAO.JDBCImpl;
+package ru.leonvsg.education.timesheet.dao.jdbc;
 
-import ru.education.timesheet.ConnectionManager.ConnectionManager;
-import ru.education.timesheet.DAO.Basic.RatingDAO;
-import ru.education.timesheet.Entities.Lesson;
-import ru.education.timesheet.Entities.Rating;
-import ru.education.timesheet.Entities.User;
-
+import ru.leonvsg.education.timesheet.connections.ConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.RatingDAO;
+import ru.leonvsg.education.timesheet.entities.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

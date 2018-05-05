@@ -1,7 +1,6 @@
-package ru.education.timesheet.ConnectionManager;
+package ru.leonvsg.education.timesheet.connections;
 
-import ru.education.timesheet.Settings;
-
+import ru.leonvsg.education.timesheet.Settings;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

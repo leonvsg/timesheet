@@ -1,4 +1,4 @@
-package ru.education.timesheet.Entities;
+package ru.leonvsg.education.timesheet.entities;
 
 public class Group {
 

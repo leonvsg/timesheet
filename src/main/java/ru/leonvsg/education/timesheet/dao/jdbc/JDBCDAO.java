@@ -1,12 +1,8 @@
-package ru.education.timesheet.DAO.JDBCImpl;
+package ru.leonvsg.education.timesheet.dao.jdbc;
 
-import ru.education.timesheet.ConnectionManager.ConnectionManager;
-import ru.education.timesheet.DAO.Basic.DAO;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import ru.leonvsg.education.timesheet.connections.ConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.DAO;
+import java.sql.*;
 import java.util.List;
 
 public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {

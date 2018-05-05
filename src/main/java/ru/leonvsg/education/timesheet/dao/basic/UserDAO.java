@@ -1,10 +1,6 @@
-package ru.education.timesheet.DAO.Basic;
+package ru.leonvsg.education.timesheet.dao.basic;
 
-import ru.education.timesheet.Entities.Group;
-import ru.education.timesheet.Entities.Rating;
-import ru.education.timesheet.Entities.Session;
-import ru.education.timesheet.Entities.User;
-
+import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
 
 public interface UserDAO extends DAO<User, Integer> {

@@ -1,4 +1,4 @@
-package ru.education.timesheet.ConnectionManager;
+package ru.leonvsg.education.timesheet.connections;
 
 import java.sql.Connection;
 

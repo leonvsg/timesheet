@@ -1,8 +1,6 @@
-package ru.education.timesheet.DAO.Basic;
+package ru.leonvsg.education.timesheet.dao.basic;
 
-import ru.education.timesheet.Entities.Lesson;
-import ru.education.timesheet.Entities.Rating;
-import ru.education.timesheet.Entities.User;
+import ru.leonvsg.education.timesheet.entities.*;
 
 public interface RatingDAO extends DAO<Rating, Integer> {
     User getUser(Rating rating);

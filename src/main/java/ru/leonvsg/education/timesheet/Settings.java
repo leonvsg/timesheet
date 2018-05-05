@@ -1,4 +1,4 @@
-package ru.education.timesheet;
+package ru.leonvsg.education.timesheet;
 
 public class Settings {
 
