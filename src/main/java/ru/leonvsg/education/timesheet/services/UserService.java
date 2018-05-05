@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.services;
 
 import com.google.common.hash.Hashing;
+import ru.leonvsg.education.timesheet.Role;
 import ru.leonvsg.education.timesheet.Settings;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
@@ -14,10 +15,23 @@ import ru.leonvsg.education.timesheet.entities.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserService {
 
     private ConnectionManager connectionManager = JDBCConnectionManager.getInstance();
+
+    public boolean isBusyLogin(String login){
+        UserDAO userDAO = new JDBCUserDAO(connectionManager);
+        return userDAO.read(login) == null;
+    }
+
+    public boolean isValidLogin(String login){
+        Pattern regex = Pattern.compile(Settings.VALID_LOGIN_REGEX, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = regex.matcher(login);
+        return matcher.find();
+    }
 
     public boolean register(String login, String password, String role, String name, String middlename, String surname){
         final String hashedPassword = Hashing.sha256()
@@ -40,8 +54,9 @@ public class UserService {
         return null;
     }
 
-    public boolean authenticate(String token){
-        return true;
+    public User authenticate(String token){
+        SessionDAO dao = new JDBCSessionDAO(connectionManager);
+        return dao.getUser(token);
     }
 
     public boolean delete(User user){
@@ -52,8 +67,18 @@ public class UserService {
         return true;
     }
 
-    public boolean verify (User user) throws VerifyUserException {
-        return true;
+    public Role verifyRole(User user) {
+        return null;
+    }
+
+    public Role verifyRole(Integer id) {
+        return null;
+    }
+
+    public Role verifyRole(String token) {
+        SessionDAO dao = new JDBCSessionDAO(connectionManager);
+        User user = dao.getUser(token);
+        return Role.valueOf(user.getRole());
     }
 
     public class VerifyUserException extends RuntimeException {

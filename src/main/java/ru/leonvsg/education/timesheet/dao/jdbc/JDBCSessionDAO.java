@@ -109,7 +109,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
                             "FROM timesheet.sessions AS s " +
-                            "LEFT JOIN timesheet.users AS u ON s.userid = u.userid" +
+                            "LEFT JOIN timesheet.users AS u ON s.userid = u.userid " +
                             "WHERE s.token=?");
             statement.setString(1, token);
             ResultSet resultSet = statement.executeQuery();

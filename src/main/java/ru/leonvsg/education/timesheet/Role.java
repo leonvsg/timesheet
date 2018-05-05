@@ -1,6 +1,6 @@
 package ru.leonvsg.education.timesheet;
 
-public enum Roles {
+public enum Role {
     STUDENT,
     ADMIN,
     LECTOR
