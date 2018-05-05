@@ -119,6 +119,32 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
+    public User read(String login) {
+        User user = null;
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM timesheet.users WHERE login=?");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt("userid"),
+                        resultSet.getString("login"),
+                        resultSet.getString("password"),
+                        resultSet.getString("regdate"),
+                        resultSet.getString("role"),
+                        resultSet.getString("name"),
+                        resultSet.getString("middlename"),
+                        resultSet.getString("surname")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
     public List<Rating> getRating(User user) {
         return getRating(user.getId());
     }

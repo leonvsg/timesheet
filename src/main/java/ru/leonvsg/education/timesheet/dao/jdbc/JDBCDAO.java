@@ -2,6 +2,8 @@ package ru.leonvsg.education.timesheet.dao.jdbc;
 
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.DAO;
+import ru.leonvsg.education.timesheet.dao.basic.EntityPersistanceException;
+
 import java.sql.*;
 import java.util.List;
 
@@ -24,17 +26,19 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
     protected abstract List<ENTITY> parseResultSet(ResultSet resultSet) throws SQLException;
 
     @Override
-    public void create(ENTITY entity) {
+    public boolean create(ENTITY entity) {
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = getPreparedStatementForInsert(connection, entity);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            return false;
         }
     }
 
     @Override
-    public ENTITY read(KEY key) throws SQLException {
+    public ENTITY read(KEY key) throws EntityPersistanceException {
         List<ENTITY> entities = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = getPreparedStatementForSelect(connection, key);
@@ -47,28 +51,32 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             return null;
         }
         if (entities.size() > 1) {
-            throw new SQLException("Received more than one record");
+            throw new EntityPersistanceException("Received more than one record");
         }
         return entities.iterator().next();
     }
 
     @Override
-    public void update(ENTITY entity) {
+    public boolean update(ENTITY entity) {
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = getPreparedStatementForUpdate(connection, entity);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            return false;
         }
     }
 
     @Override
-    public void delete(KEY key) {
+    public boolean delete(KEY key) {
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = getPreparedStatementForDelete(connection, key);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            return false;
         }
     }
 

@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface DAO<ENTITY, KEY> {
 
-    void create(ENTITY entity);
+    boolean create(ENTITY entity);
 
-    ENTITY read(KEY key) throws SQLException;
+    ENTITY read(KEY key) throws EntityPersistanceException;
 
-    void update(ENTITY entity);
+    boolean update(ENTITY entity);
 
-    void delete(KEY key);
+    boolean delete(KEY key);
 
     List<ENTITY> getAll();
 }

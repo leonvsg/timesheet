@@ -4,6 +4,8 @@ import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
 
 public interface UserDAO extends DAO<User, Integer> {
+    User read(String login);
+
     List<Rating> getRating(User user);
 
     List<Rating> getRating(Integer userId);

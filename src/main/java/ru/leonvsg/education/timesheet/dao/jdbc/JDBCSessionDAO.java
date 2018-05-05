@@ -103,7 +103,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
     }
 
     @Override
-    public User getUser(Session session) {
+    public User getUser(String token) {
         User user = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -111,7 +111,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
                             "FROM timesheet.sessions AS s " +
                             "LEFT JOIN timesheet.users AS u ON s.userid = u.userid" +
                             "WHERE s.token=?");
-            statement.setString(1, session.getToken());
+            statement.setString(1, token);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User(

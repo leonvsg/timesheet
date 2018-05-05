@@ -3,4 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <display-name>Register User</display-name>
+    <servlet>
+        <servlet-name>register_user</servlet-name>
+        <servlet-class>ru.leonvsg.education.timesheet.servlets.RegisterUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>register_user</servlet-name>
+        <url-pattern>/user/register</url-pattern>
+    </servlet-mapping>
+
+    <display-name>Auth User</display-name>
+    <servlet>
+        <servlet-name>auth_user</servlet-name>
+        <servlet-class>ru.leonvsg.education.timesheet.servlets.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>auth_user</servlet-name>
+        <url-pattern>/user/auth</url-pattern>
+    </servlet-mapping>
+
 </web-app>
