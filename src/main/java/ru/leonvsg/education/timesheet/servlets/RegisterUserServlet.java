@@ -31,9 +31,21 @@ public class RegisterUserServlet extends HttpServlet {
             resp.getWriter().println(json.toString());
             return;
         }
+        if (!userService.isValidPassword(password)){
+            json.put("result", "failed");
+            json.put("error", "Invalid password");
+            resp.getWriter().println(json.toString());
+            return;
+        }
+        if (!userService.isValidRole(role)){
+            json.put("result", "failed");
+            json.put("error", "Invalid role");
+            resp.getWriter().println(json.toString());
+            return;
+        }
         if (!userService.isValidLogin(login)){
             json.put("result", "failed");
-            json.put("error", "Invalid login format");
+            json.put("error", "Invalid login");
             resp.getWriter().println(json.toString());
             return;
         }
