@@ -37,7 +37,7 @@ public class RegisterUserServlet extends HttpServlet {
             resp.getWriter().println(json.toString());
             return;
         }
-        if (!userService.isBusyLogin(login)){
+        if (userService.isBusyLogin(login)){
             json.put("result", "failed");
             json.put("error", "Login is busy");
             resp.getWriter().println(json.toString());

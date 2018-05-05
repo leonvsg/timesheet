@@ -24,7 +24,7 @@ public class UserService {
 
     public boolean isBusyLogin(String login){
         UserDAO userDAO = new JDBCUserDAO(connectionManager);
-        return userDAO.read(login) == null;
+        return userDAO.read(login) != null;
     }
 
     public boolean isValidLogin(String login){
