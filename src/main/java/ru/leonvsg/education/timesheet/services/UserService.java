@@ -1,19 +1,11 @@
 package ru.leonvsg.education.timesheet.services;
 
 import com.google.common.hash.Hashing;
-import ru.leonvsg.education.timesheet.Role;
+import ru.leonvsg.education.timesheet.entities.*;
 import ru.leonvsg.education.timesheet.Settings;
-import ru.leonvsg.education.timesheet.connections.ConnectionManager;
-import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
-import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
-import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
-import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
-import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
-import ru.leonvsg.education.timesheet.entities.Course;
-import ru.leonvsg.education.timesheet.entities.Group;
-import ru.leonvsg.education.timesheet.entities.Session;
-import ru.leonvsg.education.timesheet.entities.User;
-
+import ru.leonvsg.education.timesheet.connections.*;
+import ru.leonvsg.education.timesheet.dao.basic.*;
+import ru.leonvsg.education.timesheet.dao.jdbc.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +45,10 @@ public class UserService {
         return true;
     }
 
+    public List<User> get(){
+        return new JDBCUserDAO(connectionManager).getAll();
+    }
+
     public boolean register(String login, String password, String role, String name, String middlename, String surname){
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
@@ -80,22 +76,6 @@ public class UserService {
         return dao.getUser(token);
     }
 
-    public boolean delete(User user){
-        return true;
-    }
-
-    public boolean delete(Integer userId){
-        return true;
-    }
-
-    public Role verifyRole(User user) {
-        return null;
-    }
-
-    public Role verifyRole(Integer id) {
-        return null;
-    }
-
     public Role verifyRole(String token) {
         if (token == null) return null;
         SessionDAO dao = new JDBCSessionDAO(connectionManager);
@@ -104,8 +84,4 @@ public class UserService {
         return Role.valueOf(user.getRole());
     }
 
-    public Map<Group, Course> getCourses(User user){
-        if (user == null) return null;
-        return new JDBCUserDAO(connectionManager).getCourses(user);
-    }
 }

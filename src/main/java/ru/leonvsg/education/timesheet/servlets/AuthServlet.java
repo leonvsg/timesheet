@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.servlets;
 
 import org.json.JSONObject;
 import ru.leonvsg.education.timesheet.services.UserService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

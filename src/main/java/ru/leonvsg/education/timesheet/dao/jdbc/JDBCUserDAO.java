@@ -204,6 +204,42 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
+    public Map<Group, Course> getGroups() {
+        Map<Group, Course> courses = new HashMap<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description, " +
+                            "c.courseid, c.coursename, c.description AS coursedescription, c.duration " +
+                            "FROM timesheet.members AS m " +
+                            "  LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
+                            "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid "
+            );
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                courses.put(
+                        new Group(
+                                resultSet.getInt("groupid"),
+                                resultSet.getString("groupname"),
+                                resultSet.getInt("courseid"),
+                                resultSet.getString("startdate"),
+                                resultSet.getString("expdate"),
+                                resultSet.getString("description")
+                        ),
+                        new Course(
+                                resultSet.getInt("courseid"),
+                                resultSet.getString("coursename"),
+                                resultSet.getString("coursedescription"),
+                                resultSet.getInt("duration")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    @Override
     public List<Session> getSessions(User user) {
         return getSessions(user.getId());
     }

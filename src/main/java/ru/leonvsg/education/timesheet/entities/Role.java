@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet;
+package ru.leonvsg.education.timesheet.entities;
 
 public enum Role {
     STUDENT,

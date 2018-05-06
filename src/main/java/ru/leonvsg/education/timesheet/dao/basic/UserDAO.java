@@ -15,6 +15,8 @@ public interface UserDAO extends DAO<User, Integer> {
 
     List<Group> getGroups(Integer userId);
 
+    Map<Group, Course> getGroups();
+
     List<Session> getSessions(User user);
 
     List<Session> getSessions(Integer userId);

@@ -1,16 +1,46 @@
 package ru.leonvsg.education.timesheet.servlets;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-import ru.leonvsg.education.timesheet.Role;
+import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.services.UserService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RegisterUserServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/plain;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        UserService userService = new UserService();
+        String token = req.getParameter("token");
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        if (userService.verifyRole(token) != Role.ADMIN){
+            json.put("result", "failed");
+            json.put("error", "Permission denied");
+            resp.getWriter().println(json.toString());
+            return;
+        }
+        userService.get().forEach(user -> {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", user.getId());
+            jsonObject.put("login", user.getLogin());
+            jsonObject.put("regDate", user.getRegDate());
+            jsonObject.put("role", user.getRole());
+            jsonObject.put("name", user.getName());
+            jsonObject.put("middleName", user.getMiddleName());
+            jsonObject.put("surname", user.getSurname());
+            jsonArray.put(jsonObject);
+        });
+        json.put("result", "success");
+        json.put("users", jsonArray);
+        resp.getWriter().println(json.toString());
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
