@@ -8,9 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Main menu</title>
   </head>
   <body>
-  $END$
+  <h2>Main menu</h2>
+  <ul>
+      <li><a href="/timesheet/users">Users</a></li>
+  </ul>
   </body>
 </html>

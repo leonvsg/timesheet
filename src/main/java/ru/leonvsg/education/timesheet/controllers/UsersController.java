@@ -1,23 +1,33 @@
-package ru.leonvsg.education.timesheet.servlets;
+package ru.leonvsg.education.timesheet.controllers;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.leonvsg.education.timesheet.entities.Role;
+import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-public class UserServlet extends HttpServlet {
+public class UsersController extends HttpServlet {
+
+    UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/plain;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
-        UserService userService = new UserService();
-        String token = req.getParameter("token");
+        String token = req.getSession().getAttribute("token").toString();
+        if (userService.verifyRole(token) == Role.ADMIN){
+            req.setAttribute("users", userService.get());
+            req.getRequestDispatcher("/users.jsp").forward(req, resp);
+        } else {
+            resp.sendRedirect(req.getContextPath() + "user?id=" + userService.authenticate(token).getId());
+        }
+
+        /*String token = req.getParameter("token");
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         if (userService.verifyRole(token) != Role.ADMIN){
@@ -39,14 +49,13 @@ public class UserServlet extends HttpServlet {
         });
         json.put("result", "success");
         json.put("users", jsonArray);
-        resp.getWriter().println(json.toString());
+        resp.getWriter().println(json.toString());*/
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
-        UserService userService = new UserService();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String role = req.getParameter("role");

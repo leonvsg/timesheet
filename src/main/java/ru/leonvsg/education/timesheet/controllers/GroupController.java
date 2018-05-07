@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet.servlets;
+package ru.leonvsg.education.timesheet.controllers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class GroupServlet extends HttpServlet {
+public class GroupController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
