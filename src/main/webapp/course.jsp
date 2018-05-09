@@ -1,6 +1,4 @@
-<%@ page import="ru.leonvsg.education.timesheet.entities.Course" %>
-<%@ page import="ru.leonvsg.education.timesheet.entities.Group" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: leonvsg
   Date: 09.05.2018
@@ -8,15 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Course Detail Page</title>
 </head>
 <body>
-<a href="/timesheet/course">Back</a>
-<%
-    Course course = (Course) request.getAttribute("course");
-%>
+<a href="courses">Back</a>
 <table border="black 2px">
     <tr>
         <td>Id</td>
@@ -25,17 +21,14 @@
         <td>Duration</td>
     </tr>
     <tr>
-        <td><%=course.getId()%></td>
-        <td><%=course.getName()%></td>
-        <td><%=course.getDescription()%></td>
-        <td><%=course.getDuration()%></td>
+        <td><c:out value="${course.getId()}"/></td>
+        <td><c:out value="${course.getName()}"/></td>
+        <td><c:out value="${course.getDescription()}"/></td>
+        <td><c:out value="${course.getDuration()}"/></td>
     </tr>
 </table>
 <br>
 <h4>Groups</h4>
-<%
-    ArrayList<Group> groups = (ArrayList<Group>) request.getAttribute("groups");
-%>
 <table border="black 2px">
     <tr>
         <td>Id</td>
@@ -44,17 +37,19 @@
         <td>Start Date</td>
         <td>Expiration Date</td>
     </tr>
-    <%
-        for (Group group: groups) {
-    %>
+    <c:forEach items="groups" var="group">
     <tr>
-        <td><%=group.getId()%></td>
-        <td><a href="/timesheet/group?id=<%=group.getId()%>"><%=group.getName()%></a></td>
-        <td><%=group.getDescription()%></td>
-        <td><%=group.getStartDate()%></td>
-        <td><%=group.getExpDate()%></td>
+        <td><c:out value="${group.getId()}"/></td>
+        <td>
+            <a href="${pageContext.request.contextPath}group?id=<c:out value="${group.getId()}"/>">
+                <c:out value="${group.getName()}"/>
+            </a>
+        </td>
+        <td><c:out value="${group.getDescription()}"/></td>
+        <td><c:out value="${group.getStartDate()}"/></td>
+        <td><c:out value="${group.getExpDate()}"/></td>
     </tr>
-    <%}%>
+    </c:forEach>
 </table>
 </body>
 </html>

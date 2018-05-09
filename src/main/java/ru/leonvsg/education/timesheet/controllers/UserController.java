@@ -63,8 +63,8 @@ public class UserController extends HttpServlet {
             return;
         }
         if (userService.register(login, password, role, name, middlename, surname)){
-            resp.sendRedirect(req.getContextPath() + "/users?errorMessage=Success");
+            resp.sendRedirect(req.getContextPath() + "users?errorMessage=Success");
         }
-        else resp.sendRedirect(req.getContextPath() + "/users?errorMessage=WTF???");
+        else resp.sendRedirect(req.getContextPath() + "users?errorMessage=WTF???");
     }
 }

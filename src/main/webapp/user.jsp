@@ -6,15 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>User Detail Page</title>
 </head>
 <body>
-<a href="/timesheet/">To main menu</a>
-<%
-    User user = (User) request.getAttribute("user");
-%>
+<a href="${pageContext.request.contextPath}/">To main menu</a>
 <table border="black 2px">
     <tr>
         <td>Id</td>
@@ -25,12 +23,12 @@
         <td>Role</td>
     </tr>
     <tr>
-        <td><%=user.getId()%></td>
-        <td><%=user.getName()%></td>
-        <td><%=user.getMiddleName()%></td>
-        <td><%=user.getSurname()%></td>
-        <td><%=user.getLogin()%></td>
-        <td><%=user.getRole()%></td>
+        <td><c:out value="${user.getId()}"/></td>
+        <td><c:out value="${user.getName()}"/></td>
+        <td><c:out value="${user.getMiddleName()}"/></td>
+        <td><c:out value="${user.getSurname()}"/></td>
+        <td><c:out value="${user.getLogin()}"/></td>
+        <td><c:out value="${user.getRole()}"/></td>
     </tr>
 </table>
 </body>

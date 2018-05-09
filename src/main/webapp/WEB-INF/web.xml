@@ -33,6 +33,7 @@
     <servlet-mapping>
         <servlet-name>auth_user</servlet-name>
         <url-pattern>/auth</url-pattern>
+        <url-pattern>/timesheet/auth</url-pattern>
     </servlet-mapping>
 
     <servlet>
