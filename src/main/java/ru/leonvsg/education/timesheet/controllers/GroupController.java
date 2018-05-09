@@ -16,7 +16,7 @@ public class GroupController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/plain;charset=utf-8");
+        /*resp.setContentType("text/plain;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         UserService userService = new UserService();
         GroupService groupService = new GroupService();
@@ -52,7 +52,7 @@ public class GroupController extends HttpServlet {
         });
         json.put("result", "success");
         json.put("groups", jsonArray);
-        resp.getWriter().println(json.toString());
+        resp.getWriter().println(json.toString());*/
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.leonvsg.education.timesheet.dao.basic;
 
 import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
+import java.util.Map;
 
 public interface GroupDAO extends DAO<Group, Integer> {
 
@@ -16,4 +17,6 @@ public interface GroupDAO extends DAO<Group, Integer> {
     Course getCourse(Group group);
 
     Course getCourse(Integer groupId);
+
+    List<Group> getAllGroupsWithCourses();
 }

@@ -45,7 +45,7 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
                 );
             else {
                 statement = connection.prepareStatement(
-                        "SELECT * FROM timesheet.courses WHERE userid=?"
+                        "SELECT * FROM timesheet.courses WHERE courseid=?"
                 );
                 statement.setInt(1, key);
             }

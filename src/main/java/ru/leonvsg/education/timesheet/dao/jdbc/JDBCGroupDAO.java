@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
 
@@ -109,6 +111,41 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             }
         } catch (Exception e) {
             throw new SQLException("Incorrect ResultSet");
+        }
+        return groups;
+    }
+
+    @Override
+    public List<Group> getAllGroupsWithCourses() {
+        List<Group> groups = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description, " +
+                            "c.courseid, c.coursename, c.description AS coursedescription, c.duration " +
+                            "FROM timesheet.members AS m " +
+                            "  LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
+                            "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid "
+            );
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                groups.add(
+                        new Group(
+                                resultSet.getInt("groupid"),
+                                resultSet.getString("groupname"),
+                                new Course(
+                                        resultSet.getInt("courseid"),
+                                        resultSet.getString("coursename"),
+                                        resultSet.getString("coursedescription"),
+                                        resultSet.getInt("duration")
+                                ),
+                                resultSet.getString("startdate"),
+                                resultSet.getString("expdate"),
+                                resultSet.getString("description")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return groups;
     }

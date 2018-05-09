@@ -18,7 +18,7 @@
 <br>
 <form action="${pageContext.request.contextPath}/auth" method="post">
     <input type="text" placeholder="Type login" name="login"><br>
-    <input type="text" placeholder="Type password" name="password"><br>
+    <input type="password" placeholder="Type password" name="password"><br>
     <input type="submit" value="Enter">
 </form>
 </body>

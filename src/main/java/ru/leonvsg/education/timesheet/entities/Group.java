@@ -19,6 +19,16 @@ public class Group {
         this.description = description;
     }
 
+    public Group(Integer id, String name, Course course, String startDate, String expDate, String description) {
+        this.id = id;
+        this.name = name;
+        this.courseId = course.getId();
+        this.course = course;
+        this.startDate = startDate;
+        this.expDate = expDate;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

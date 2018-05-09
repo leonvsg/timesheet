@@ -17,10 +17,11 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private ConnectionManager connectionManager = JDBCConnectionManager.getInstance();
+    private UserDAO userDAO = new JDBCUserDAO(connectionManager);
+    private SessionDAO sessionDAO = new JDBCSessionDAO(connectionManager);
 
     public boolean isBusyLogin(String login){
         if (login == null) return true;
-        UserDAO userDAO = new JDBCUserDAO(connectionManager);
         return userDAO.read(login) != null;
     }
 
@@ -46,27 +47,34 @@ public class UserService {
     }
 
     public List<User> get(){
-        return new JDBCUserDAO(connectionManager).getAll();
+        return userDAO.getAll();
     }
 
     public boolean register(String login, String password, String role, String name, String middlename, String surname){
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
-        return new JDBCUserDAO(connectionManager)
-                .create(new User(null, login, hashedPassword, new Date().toString(), role.toUpperCase(), name, middlename, surname));
+        return userDAO.create(
+                new User(
+                        null,
+                        login,
+                        hashedPassword,
+                        new Date().toString(),
+                        role.toUpperCase(),
+                        name,
+                        middlename,
+                        surname
+                ));
     }
 
     public String authenticate(String login, String password){
         if (login == null || password == null) return null;
-        UserDAO userDAO = new JDBCUserDAO(connectionManager);
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
         User user = userDAO.read(login);
         if (user == null || !hashedPassword.equals(user.getPassword())) return null;
         String token = UUID.randomUUID().toString();
-        SessionDAO sessionDAO = new JDBCSessionDAO(connectionManager);
         if (sessionDAO.create(new Session(user, token))) return token;
         return null;
     }
