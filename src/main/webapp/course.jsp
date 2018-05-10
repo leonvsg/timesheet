@@ -7,49 +7,58 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Course Detail Page</title>
-</head>
+<c:import url="/head.jsp"/>
 <body>
-<a href="courses">Back</a>
-<table border="black 2px">
-    <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Description</td>
-        <td>Duration</td>
-    </tr>
-    <tr>
-        <td><c:out value="${course.getId()}"/></td>
-        <td><c:out value="${course.getName()}"/></td>
-        <td><c:out value="${course.getDescription()}"/></td>
-        <td><c:out value="${course.getDuration()}"/></td>
-    </tr>
-</table>
-<br>
-<h4>Groups</h4>
-<table border="black 2px">
-    <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Description</td>
-        <td>Start Date</td>
-        <td>Expiration Date</td>
-    </tr>
-    <c:forEach items="groups" var="group">
-    <tr>
-        <td><c:out value="${group.getId()}"/></td>
-        <td>
-            <a href="${pageContext.request.contextPath}group?id=<c:out value="${group.getId()}"/>">
-                <c:out value="${group.getName()}"/>
-            </a>
-        </td>
-        <td><c:out value="${group.getDescription()}"/></td>
-        <td><c:out value="${group.getStartDate()}"/></td>
-        <td><c:out value="${group.getExpDate()}"/></td>
-    </tr>
-    </c:forEach>
-</table>
+<div class="wrapper">
+    <c:import url="/header.jsp"/>
+    <div class="middle">
+        <div class="container">
+            <main class="content">
+                <table>
+                    <tr>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Description</td>
+                        <td>Duration</td>
+                    </tr>
+                    <tr>
+                        <td><c:out value="${course.getId()}"/></td>
+                        <td><c:out value="${course.getName()}"/></td>
+                        <td><c:out value="${course.getDescription()}"/></td>
+                        <td><c:out value="${course.getDuration()}"/></td>
+                    </tr>
+                </table>
+                <br>
+                <h4>Groups</h4>
+                <table>
+                    <tr>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Description</td>
+                        <td>Start Date</td>
+                        <td>Expiration Date</td>
+                    </tr>
+                    <c:forEach items="${groups}" var="group">
+                        <tr>
+                            <td><c:out value="${group.getId()}"/></td>
+                            <td>
+                                <a href="<c:url value="/timesheet/group?id=${group.getId()}"/>">
+                                    <c:out value="${group.getName()}"/>
+                                </a>
+                            </td>
+                            <td><c:out value="${group.getDescription()}"/></td>
+                            <td><c:out value="${group.getStartDate()}"/></td>
+                            <td><c:out value="${group.getExpDate()}"/></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </main><!-- .content -->
+        </div><!-- .container-->
+        <c:import url="/menu.jsp"/>
+    </div><!-- .middle-->
+</div><!-- .wrapper -->
+<!-- .footer -->
 </body>
 </html>
