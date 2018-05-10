@@ -4,6 +4,8 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <display-name>Timesheet</display-name>
+
     <servlet>
         <servlet-name>index</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
@@ -15,7 +17,6 @@
         <url-pattern>/timesheet</url-pattern>
     </servlet-mapping>
 
-    <display-name>Users</display-name>
     <servlet>
         <servlet-name>users</servlet-name>
         <servlet-class>ru.leonvsg.education.timesheet.controllers.UsersController</servlet-class>
@@ -25,7 +26,6 @@
         <url-pattern>/timesheet/users</url-pattern>
     </servlet-mapping>
 
-    <display-name>Auth User</display-name>
     <servlet>
         <servlet-name>auth_user</servlet-name>
         <servlet-class>ru.leonvsg.education.timesheet.controllers.AuthController</servlet-class>
@@ -33,34 +33,42 @@
     <servlet-mapping>
         <servlet-name>auth_user</servlet-name>
         <url-pattern>/auth</url-pattern>
+        <url-pattern>/timesheet/auth</url-pattern>
     </servlet-mapping>
 
-    <display-name>Groups</display-name>
     <servlet>
         <servlet-name>group</servlet-name>
         <servlet-class>ru.leonvsg.education.timesheet.controllers.GroupController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>group</servlet-name>
-        <url-pattern>/group</url-pattern>
+        <url-pattern>/timesheet/group</url-pattern>
     </servlet-mapping>
 
-    <display-name>Course</display-name>
     <servlet>
         <servlet-name>course</servlet-name>
         <servlet-class>ru.leonvsg.education.timesheet.controllers.CourseController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>course</servlet-name>
-        <url-pattern>/course</url-pattern>
+        <url-pattern>/timesheet/course</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>user</servlet-name>
+        <servlet-class>ru.leonvsg.education.timesheet.controllers.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>user</servlet-name>
+        <url-pattern>/timesheet/user</url-pattern>
     </servlet-mapping>
 
     <filter>
-        <filter-name>AuthFilter</filter-name>
+        <filter-name>auth_filter</filter-name>
         <filter-class>ru.leonvsg.education.timesheet.controllers.filters.AuthFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
+        <filter-name>auth_filter</filter-name>
         <url-pattern>/timesheet/*</url-pattern>
     </filter-mapping>
 

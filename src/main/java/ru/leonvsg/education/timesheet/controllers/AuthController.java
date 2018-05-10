@@ -15,7 +15,13 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
-        req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+        String exit = req.getParameter("exit");
+        if (exit != null && exit.equals("true")){
+            req.getSession().invalidate();
+            resp.sendRedirect(req.getContextPath() + "/");
+        } else {
+            req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+        }
     }
 
     @Override

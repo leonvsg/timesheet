@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.controllers;
 
 import org.json.JSONObject;
 import ru.leonvsg.education.timesheet.entities.Role;
-import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
 
 import javax.servlet.ServletException;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class UsersController extends HttpServlet {
 
@@ -54,7 +52,7 @@ public class UsersController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/plain;charset=utf-8");
+        /*resp.setContentType("text/plain;charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
@@ -97,6 +95,6 @@ public class UsersController extends HttpServlet {
         if (userService.register(login, password, role, name, middlename, surname)){
             resp.getWriter().println(json.put("result", "success").toString());
         }
-        else resp.getWriter().println(json.put("result", "failed").toString());
+        else resp.getWriter().println(json.put("result", "failed").toString());*/
     }
 }

@@ -204,42 +204,6 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
-    public Map<Group, Course> getGroups() {
-        Map<Group, Course> courses = new HashMap<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description, " +
-                            "c.courseid, c.coursename, c.description AS coursedescription, c.duration " +
-                            "FROM timesheet.members AS m " +
-                            "  LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
-                            "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid "
-            );
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                courses.put(
-                        new Group(
-                                resultSet.getInt("groupid"),
-                                resultSet.getString("groupname"),
-                                resultSet.getInt("courseid"),
-                                resultSet.getString("startdate"),
-                                resultSet.getString("expdate"),
-                                resultSet.getString("description")
-                        ),
-                        new Course(
-                                resultSet.getInt("courseid"),
-                                resultSet.getString("coursename"),
-                                resultSet.getString("coursedescription"),
-                                resultSet.getInt("duration")
-                        )
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return courses;
-    }
-
-    @Override
     public List<Session> getSessions(User user) {
         return getSessions(user.getId());
     }
@@ -265,37 +229,28 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
-    public Map<Group, Course> getCourses(User user){
+    public List<Course> getCourses(User user){
         return getCourses(user.getId());
     }
 
     @Override
-    public Map<Group, Course> getCourses(Integer userId){
-        Map<Group, Course> courses = new HashMap<>();
+    public List<Course> getCourses(Integer userId){
+        List<Course> courses = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description, " +
-                            "c.courseid, c.coursename, c.description AS coursedescription, c.duration " +
+                    "SELECT c.courseid, c.coursename, c.description, c.duration " +
                             "FROM timesheet.members AS m " +
                             "  LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
                             "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid " +
-                            "WHERE m.userid=?");
+                            "WHERE m.userid=? GROUP BY c.courseid");
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                courses.put(
-                        new Group(
-                                resultSet.getInt("groupid"),
-                                resultSet.getString("groupname"),
-                                resultSet.getInt("courseid"),
-                                resultSet.getString("startdate"),
-                                resultSet.getString("expdate"),
-                                resultSet.getString("description")
-                        ),
+                courses.add(
                         new Course(
                                 resultSet.getInt("courseid"),
                                 resultSet.getString("coursename"),
-                                resultSet.getString("coursedescription"),
+                                resultSet.getString("description"),
                                 resultSet.getInt("duration")
                         )
                 );
