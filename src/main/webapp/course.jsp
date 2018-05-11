@@ -14,6 +14,7 @@
 <div class="wrapper">
     <c:import url="/header.jsp"/>
     <div class="middle">
+        <c:import url="/menu.jsp"/>
         <div class="container">
             <main class="content">
                 <table>
@@ -56,7 +57,6 @@
                 </table>
             </main><!-- .content -->
         </div><!-- .container-->
-        <c:import url="/menu.jsp"/>
     </div><!-- .middle-->
 </div><!-- .wrapper -->
 <!-- .footer -->

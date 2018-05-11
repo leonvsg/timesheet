@@ -15,62 +15,76 @@
 <div class="wrapper">
     <c:import url="/header.jsp"/>
     <div class="middle">
+        <c:import url="/menu.jsp"/>
         <div class="container">
             <main class="content">
-
                 <div class="panel panel-default">
                     <!-- Содержание панели по умолчанию -->
                     <div class="panel-heading">Users</div>
-
+                    <div class="alert alert-info error-message" role="alert">
+                        <c:out value="${param.errorMessage}" default="Add new user"/>
+                    </div>
                     <!-- Таблица -->
                     <table class="table">
+                        <tr class="cst-table">
+                            <form role="form" class="form-inline" action="${pageContext.request.contextPath}user" method="post">
+                                <td>
+                                    <button type="submit" class="btn btn-success">+</button>
+                                </td>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middlename">
+                                </td>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="surname" name="surname" placeholder="Surname">
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="login" id="email" placeholder="Email">
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                </td>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <select name="role" class="form-control">
+                                            <%
+                                                for (Role role: Role.values()){
+                                            %>
+                                            <option><%=role.toString()%></option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                                </td>
+                            </form>
+                        </tr>
                         <tr>
                             <td>Id</td>
-                            <td>Name</td>
-                            <td>Surname</td>
-                            <td>Email</td>
-                            <td>Role</td>
+                            <td colspan="3">Name</td>
+                            <td colspan="3">Surname</td>
+                            <td colspan="3">Email</td>
+                            <td colspan="3">Role</td>
                         </tr>
                         <c:forEach items="${users}" var="user">
                             <tr>
                                 <td><c:out value="${user.getId()}"/></td>
-                                <td><c:out value="${user.getName()}"/></td>
-                                <td><c:out value="${user.getSurname()}"/></td>
-                                <td><c:out value="${user.getLogin()}"/></td>
-                                <td><c:out value="${user.getRole()}"/></td>
+                                <td colspan="3"><c:out value="${user.getName()}"/></td>
+                                <td colspan="3"><c:out value="${user.getSurname()}"/></td>
+                                <td colspan="3"><c:out value="${user.getLogin()}"/></td>
+                                <td colspan="3"><c:out value="${user.getRole()}"/></td>
                             </tr>
                         </c:forEach>
-                        <tr>
-                            <form action="${pageContext.request.contextPath}user" method="post">
-                                <td><input type="submit" value="+"></td>
-                                <td>
-                                    <input type="text" placeholder="Name" name="name"><br>
-                                    <input type="text" placeholder="Middlename(opt)" name="middlename">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Surname" name="surname"><br>
-                                    <input type="text" placeholder="Password" name="password">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Email(login)" name="login"><br>
-                                    <c:out value="${param.errorMessage}" default="Result"/>
-                                </td>
-                                <td>
-                                    <select name="role">
-                                        <%
-                                            for (Role role: Role.values()){
-                                        %>
-                                        <option><%=role.toString()%></option>
-                                        <%}%>
-                                    </select>
-                                </td>
-                            </form>
-                        </tr>
                     </table>
                 </div>
             </main><!-- .content -->
         </div><!-- .container-->
-        <c:import url="/menu.jsp"/>
     </div><!-- .middle-->
 </div><!-- .wrapper -->
 <!-- .footer -->
