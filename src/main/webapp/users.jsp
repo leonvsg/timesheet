@@ -27,7 +27,7 @@
                     <!-- Таблица -->
                     <table class="table">
                         <tr class="cst-table">
-                            <form role="form" class="form-inline" action="${pageContext.request.contextPath}user" method="post">
+                            <form role="form" class="form-inline" action="${pageContext.request.contextPath}users" method="post">
                                 <td>
                                     <button type="submit" class="btn btn-success">+</button>
                                 </td>
@@ -75,7 +75,11 @@
                         <c:forEach items="${users}" var="user">
                             <tr>
                                 <td><c:out value="${user.getId()}"/></td>
-                                <td colspan="3"><c:out value="${user.getName()}"/></td>
+                                <td colspan="3">
+                                    <a href="user?id=<c:out value="${user.getId()}"/>">
+                                        <c:out value="${user.getName()}"/>
+                                    </a>
+                                </td>
                                 <td colspan="3"><c:out value="${user.getSurname()}"/></td>
                                 <td colspan="3"><c:out value="${user.getLogin()}"/></td>
                                 <td colspan="3"><c:out value="${user.getRole()}"/></td>

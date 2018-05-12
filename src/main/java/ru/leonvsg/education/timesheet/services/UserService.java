@@ -50,10 +50,12 @@ public class UserService {
         return userDAO.getAll();
     }
 
+    public User getUser(Integer id){
+        return userDAO.read(id);
+    }
+
     public boolean register(String login, String password, String role, String name, String middlename, String surname){
-        final String hashedPassword = Hashing.sha256()
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
+        final String hashedPassword = getHashedPassword(password);
         return userDAO.create(
                 new User(
                         null,
@@ -67,11 +69,15 @@ public class UserService {
                 ));
     }
 
-    public String authenticate(String login, String password){
-        if (login == null || password == null) return null;
-        final String hashedPassword = Hashing.sha256()
+    public String getHashedPassword(String password) {
+        return Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
+    }
+
+    public String authenticate(String login, String password){
+        if (login == null || password == null) return null;
+        final String hashedPassword = getHashedPassword(password);
         User user = userDAO.read(login);
         if (user == null || !hashedPassword.equals(user.getPassword())) return null;
         String token = UUID.randomUUID().toString();
@@ -90,6 +96,10 @@ public class UserService {
         User user = dao.getUser(token);
         if (user == null) return null;
         return Role.valueOf(user.getRole());
+    }
+
+    public boolean updateUser(User user){
+        return userDAO.update(user);
     }
 
 }

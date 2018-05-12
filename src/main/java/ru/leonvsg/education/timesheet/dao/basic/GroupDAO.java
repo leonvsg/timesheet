@@ -18,5 +18,7 @@ public interface GroupDAO extends DAO<Group, Integer> {
 
     Course getCourse(Integer groupId);
 
-    List<Group> getAllGroupsWithCourses();
+    List<Group> getGroupsWithCourses();
+
+    List<Group> getGroupsWithCourses(User user);
 }

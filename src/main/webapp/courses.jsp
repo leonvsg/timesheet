@@ -49,8 +49,14 @@
                                 </form>
                             </c:when>
                             <c:otherwise>
-                                <a href="${pageContext.request.contextPath}course?display=all">All courses</a>
-                                <a href="${pageContext.request.contextPath}course?display=my">My courses</a>
+                                <ul class="nav nav-tabs nav-tabs-ovrd">
+                                    <li role="presentation" <c:if test="${param.display == null || param.display.equals(\"all\")}">class="active"</c:if>>
+                                        <a href="${pageContext.request.contextPath}course?display=all">All courses</a>
+                                    </li>
+                                    <li role="presentation" <c:if test="${param.display.equals(\"my\")}">class="active"</c:if>>
+                                        <a href="${pageContext.request.contextPath}course?display=my">My courses</a>
+                                    </li>
+                                </ul>
                                 <table class="table">
                             </c:otherwise>
                         </c:choose>

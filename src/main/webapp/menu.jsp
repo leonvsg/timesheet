@@ -11,10 +11,9 @@
     <div class="panel panel-success">
         <div class="panel-heading"><strong>Menu</strong></div>
         <div class="panel-body">
-            <ul>
+            <ul class="nav nav-pills nav-stacked">
                 <li><a href="${pageContext.request.contextPath}/timesheet/user">User</a></li>
                 <li><a href="${pageContext.request.contextPath}/timesheet/course">Courses</a></li>
-                <li><a href="${pageContext.request.contextPath}/timesheet/auth?exit=true">Logout</a></li>
             </ul>
         </div>
     </div>
