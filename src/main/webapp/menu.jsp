@@ -8,10 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <aside class="left-sidebar">
-    <strong>Menu</strong>
-    <ul>
-        <li><a href="${pageContext.request.contextPath}/timesheet/user">User</a></li>
-        <li><a href="${pageContext.request.contextPath}/timesheet/course">Courses</a></li>
-        <li><a href="${pageContext.request.contextPath}/timesheet/auth?exit=true">Logout</a></li>
-    </ul>
+    <div class="panel panel-success">
+        <div class="panel-heading"><strong>Menu</strong></div>
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="${pageContext.request.contextPath}/timesheet/user">User</a></li>
+                <li><a href="${pageContext.request.contextPath}/timesheet/course">Courses</a></li>
+            </ul>
+        </div>
+    </div>
 </aside>

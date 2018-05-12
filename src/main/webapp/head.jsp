@@ -13,5 +13,8 @@
     <title>Timesheet</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <link href="<c:url value="/static/style.css"/>" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="<c:url value="/static/css/bootstrap.min.css"/>" rel="stylesheet">
+    <link href="<c:url value="/static/js/bootstrap.min.js"/>" rel="stylesheet">
+    <link href="<c:url value="/static/css/style.css"/>" rel="stylesheet">
 </head>

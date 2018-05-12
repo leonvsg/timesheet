@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.controllers;
 
-import org.json.JSONObject;
+import ru.leonvsg.education.timesheet.entities.User;
+import ru.leonvsg.education.timesheet.services.SessionService;
 import ru.leonvsg.education.timesheet.services.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,12 +12,15 @@ import java.io.IOException;
 public class AuthController extends HttpServlet {
 
     UserService userService = new UserService();
+    SessionService sessionService = new SessionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         String exit = req.getParameter("exit");
         if (exit != null && exit.equals("true")){
+            String token = req.getSession().getAttribute("token").toString();
+            sessionService.invalidateToken(token);
             req.getSession().invalidate();
             resp.sendRedirect(req.getContextPath() + "/");
         } else {
@@ -31,7 +35,12 @@ public class AuthController extends HttpServlet {
         String password = req.getParameter("password");
         String token = userService.authenticate(login, password);
         if (token != null){
+            User user = userService.authenticate(token);
             req.getSession().setAttribute("token", token);
+            req.getSession().setAttribute("userName", user.getName());
+            req.getSession().setAttribute("userSurname", user.getSurname());
+            req.getSession().setAttribute("userId", user.getId());
+            req.getSession().setAttribute("userLogin", user.getLogin());
             resp.sendRedirect(req.getContextPath() + "/timesheet/");
         } else resp.sendRedirect(req.getContextPath() + "/auth?errorMessage=authenticationFail");
 

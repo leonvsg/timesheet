@@ -7,28 +7,28 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:choose>
+    <c:when test="${token != null}">
 <!DOCTYPE html>
 <html>
 <c:import url="/head.jsp"/>
   <body>
-<c:choose>
-    <c:when test="${token != null}">
         <div class="wrapper">
             <c:import url="/header.jsp"/>
             <div class="middle">
+                <c:import url="/menu.jsp"/>
                 <div class="container">
                     <main class="content">
                         <h2>Select menu item</h2>
                     </main><!-- .content -->
                 </div><!-- .container-->
-                <c:import url="/menu.jsp"/>
             </div><!-- .middle-->
         </div><!-- .wrapper -->
         <!-- .footer -->
+  </body>
+</html>
     </c:when>
     <c:otherwise>
         <c:import url="/auth.jsp"/>
     </c:otherwise>
 </c:choose>
-  </body>
-</html>

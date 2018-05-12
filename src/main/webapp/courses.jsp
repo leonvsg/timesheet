@@ -14,47 +14,74 @@
 <div class="wrapper">
     <c:import url="/header.jsp"/>
     <div class="middle">
+        <c:import url="/menu.jsp"/>
         <div class="container">
             <main class="content">
-                <c:choose>
-                    <c:when test="${user.getRole().toUpperCase().equals(\"ADMIN\")}">
-                        <h3>Add new course</h3>
-                        <form action="${pageContext.request.contextPath}course" method="post">
-                            <input type="text" placeholder="Type name" name="name"><br>
-                            <input type="text" placeholder="Type description" name="description"><br>
-                            <input type="number" placeholder="Type duration" name="duration" value="0"><br>
-                            <input type="submit" value="Add">
-                            <c:out value="${param.errorMessage}" default="Result"/>
-                        </form>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}course?display=all">All courses</a>
-                        <a href="${pageContext.request.contextPath}course?display=my">My courses</a>
-                    </c:otherwise>
-                </c:choose>
-                <table>
-                    <tr>
-                        <td>Id</td>
-                        <td>Name</td>
-                        <td>Description</td>
-                        <td>Duration</td>
-                    </tr>
-                    <c:forEach items="${courses}" var="course">
+                <div class="panel panel-default">
+                    <!-- Содержание панели по умолчанию -->
+                    <div class="panel-heading">Courses</div>
+                    <!-- Таблица -->
+                    <c:choose>
+                        <c:when test="${user.getRole().toUpperCase().equals(\"ADMIN\")}">
+                            <div class="alert alert-info error-message" role="alert">
+                                <c:out value="${param.errorMessage}" default="Add new course"/>
+                            </div>
+                            <table class="table">
+                                <form role="form" class="form-inline" action="${pageContext.request.contextPath}course" method="post">
+                                    <tr>
+                                        <td>
+                                            <button type="submit" class="btn btn-success">+</button>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="description" name="description" placeholder="Description">
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" id="duration" name="duration" value="0" placeholder="Duration">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <ul class="nav nav-tabs nav-tabs-ovrd">
+                                    <li role="presentation" <c:if test="${param.display == null || param.display.equals(\"all\")}">class="active"</c:if>>
+                                        <a href="${pageContext.request.contextPath}course?display=all">All courses</a>
+                                    </li>
+                                    <li role="presentation" <c:if test="${param.display.equals(\"my\")}">class="active"</c:if>>
+                                        <a href="${pageContext.request.contextPath}course?display=my">My courses</a>
+                                    </li>
+                                </ul>
+                                <table class="table">
+                            </c:otherwise>
+                        </c:choose>
                         <tr>
-                            <td><c:out value="${course.getId()}"/></td>
-                            <td>
-                                <a href="<c:url value="/timesheet/course?id=${course.getId()}"/>">
-                                    <c:out value="${course.getName()}"/>
-                                </a>
-                            </td>
-                            <td><c:out value="${course.getDescription()}"/></td>
-                            <td><c:out value="${course.getDuration()}"/> hours</td>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Description</td>
+                            <td>Duration</td>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach items="${courses}" var="course">
+                            <tr>
+                                <td><c:out value="${course.getId()}"/></td>
+                                <td>
+                                    <a href="<c:url value="/timesheet/course?id=${course.getId()}"/>">
+                                        <c:out value="${course.getName()}"/>
+                                    </a>
+                                </td>
+                                <td><c:out value="${course.getDescription()}"/></td>
+                                <td><c:out value="${course.getDuration()}"/> hours</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
             </main><!-- .content -->
         </div><!-- .container-->
-        <c:import url="/menu.jsp"/>
     </div><!-- .middle-->
 </div><!-- .wrapper -->
 <!-- .footer -->

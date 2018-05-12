@@ -2,7 +2,7 @@
 /build
 /.gradle
 /.idea
-/timesheet.iml
-/gradlew
-/gradlew.bat
 /gradle
+gradlew
+gradlew.bat
+timesheet.iml
