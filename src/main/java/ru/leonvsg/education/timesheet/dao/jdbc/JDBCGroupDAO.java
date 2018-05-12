@@ -277,4 +277,38 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
         }
         return course;
     }
+
+    @Override
+    public List<Rating> getRating(Group group) {
+        return getRating(group.getId());
+    }
+
+    @Override
+    public List<Rating> getRating(Integer groupId) {
+        List<Rating> ratings = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT r.id, r.userid, r.lessonid, r.value, r.description " +
+                            "FROM timesheet.rating AS r " +
+                            "  LEFT JOIN timesheet.lessons AS l ON r.lessonid = l.lessonid " +
+                            "WHERE l.groupid=?"
+            );
+            statement.setInt(1,groupId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ratings.add(
+                        new Rating(
+                                resultSet.getInt("id"),
+                                resultSet.getInt("userid"),
+                                resultSet.getInt("lessonid"),
+                                resultSet.getInt("value"),
+                                resultSet.getString("description")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ratings;
+    }
 }

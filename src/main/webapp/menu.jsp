@@ -14,6 +14,7 @@
             <ul class="nav nav-pills nav-stacked">
                 <li><a href="${pageContext.request.contextPath}/timesheet/user">User</a></li>
                 <li><a href="${pageContext.request.contextPath}/timesheet/course">Courses</a></li>
+                <li><a href="${pageContext.request.contextPath}/timesheet/rating">Rating</a></li>
             </ul>
         </div>
     </div>

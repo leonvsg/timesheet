@@ -18,8 +18,7 @@
         <div class="container">
             <main class="content">
                 <div class="panel panel-info">
-                    <!-- Содержание панели по умолчанию -->
-                    <div class="panel-heading">
+                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseUserInfo" aria-expanded="false" aria-controls="collapseUserInfo">
                         <h3 class="panel-title">Detail user information</h3>
                     </div>
                     <c:if test="${param.errorMessage != null}">
@@ -27,6 +26,7 @@
                             <c:out value="${param.errorMessage}"/>
                         </div>
                     </c:if>
+                    <div class="collapse" id="collapseUserInfo">
                     <form class="auth-form" role="form" class="form-inline" action="${pageContext.request.contextPath}user" method="post">
                         <input name="id" value="<c:out value="${user.getId()}"/>" hidden/>
                         <table class="table">
@@ -78,12 +78,13 @@
                             </tr>
                         </table>
                     </form>
+                    </div>
                 </div>
                 <div class="panel panel-info">
-                    <!-- Содержание панели по умолчанию -->
-                    <div class="panel-heading">
+                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
                         <h3 class="panel-title">Groups</h3>
                     </div>
+                    <div class="collapse" id="collapseGroups">
                     <table class="table">
                         <tr>
                             <td>Id</td>
@@ -112,6 +113,7 @@
                             </tr>
                         </c:forEach>
                     </table>
+                    </div>
                 </div>
             </main><!-- .content -->
         </div><!-- .container-->

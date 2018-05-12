@@ -63,6 +63,15 @@
         <url-pattern>/timesheet/user</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>rating</servlet-name>
+        <servlet-class>ru.leonvsg.education.timesheet.controllers.RatingController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rating</servlet-name>
+        <url-pattern>/timesheet/rating</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>

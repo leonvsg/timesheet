@@ -43,6 +43,7 @@
 }
 
 .content {
+	min-height: 500px;
 }
 
 .form-group {
@@ -104,6 +105,16 @@
 
 .auth-form {
 	overflow: hidden;
+}
+
+.collapsed-btn {
+	cursor: pointer;
+}
+
+.lessons-title {
+	display: inline-block;
+	width: 70%;
+	text-align: center;
 }
 
 /* Left Sidebar

@@ -19,6 +19,7 @@ public class UserService {
     private ConnectionManager connectionManager = JDBCConnectionManager.getInstance();
     private UserDAO userDAO = new JDBCUserDAO(connectionManager);
     private SessionDAO sessionDAO = new JDBCSessionDAO(connectionManager);
+    private GroupDAO groupDAO = new JDBCGroupDAO(connectionManager);
 
     public boolean isBusyLogin(String login){
         if (login == null) return true;
@@ -86,20 +87,22 @@ public class UserService {
     }
 
     public User authenticate(String token){
-        SessionDAO dao = new JDBCSessionDAO(connectionManager);
-        return dao.getUser(token);
+        return sessionDAO.getUser(token);
     }
 
     public Role verifyRole(String token) {
         if (token == null) return null;
-        SessionDAO dao = new JDBCSessionDAO(connectionManager);
-        User user = dao.getUser(token);
+        User user = sessionDAO.getUser(token);
         if (user == null) return null;
         return Role.valueOf(user.getRole());
     }
 
     public boolean updateUser(User user){
         return userDAO.update(user);
+    }
+
+    public List<User> getUsersByGroup(Integer groupId){
+        return groupDAO.getUsers(groupId);
     }
 
 }
