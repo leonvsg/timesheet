@@ -12,9 +12,9 @@ public class Utils {
 
     public static String requestParamsToString(HttpServletRequest request){
         if (request == null) return "{}";
-        StringBuilder params = new StringBuilder("{");
+        StringBuilder params = new StringBuilder("{ ");
         request.getParameterMap().forEach((key, values)->{
-            for (String value: values) params.append(key + ":" + value + ";");
+            for (String value: values) params.append(key + "=" + value + ", ");
         });
         params.append("}");
         return params.toString();
