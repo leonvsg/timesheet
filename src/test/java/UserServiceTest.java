@@ -31,9 +31,13 @@ public class UserServiceTest {
     private String nullLogin = null;
     private String[] validLogins = {"test@test.test", "test@test.test.test"};
     private String[] invalidLogins = {"test", "test@test", "test@test.testtest"};
+    private String[] validRoles = {"ADMIN", "student", "LeCtOr"};
+    private String invalidRole = "role";
+    private String validPassword = "password";
+    private String[] invalidPasswords = {"pass", null};
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         user = mock(User.class);
         userDAO = mock(JDBCUserDAO.class);
         sessionDAO = mock(JDBCSessionDAO.class);
@@ -56,11 +60,21 @@ public class UserServiceTest {
 
     @Test
     public void isValidLoginTest(){
-        for (String login: validLogins) {
-            assertTrue(userService.isValidLogin(login));
-        }
-        for (String login: invalidLogins) {
-            assertFalse(userService.isValidLogin(login));
-        }
+        for (String login: validLogins) assertTrue(userService.isValidLogin(login));
+        for (String login: invalidLogins) assertFalse(userService.isValidLogin(login));
     }
+
+    @Test
+    public void isValidRoleTest(){
+        for (String role : validRoles) assertTrue(userService.isValidRole(role));
+        assertFalse(userService.isValidRole(invalidRole));
+    }
+
+    @Test
+    public void isValidPasswordTest(){
+        for (String password: invalidPasswords) assertFalse(userService.isValidPassword(password));
+        assertTrue(userService.isValidPassword(validPassword));
+    }
+
+
 }
