@@ -1,8 +1,11 @@
 package ru.leonvsg.education.timesheet.controllers;
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.SessionService;
 import ru.leonvsg.education.timesheet.services.UserService;
+import ru.leonvsg.education.timesheet.services.Utils;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,29 +14,36 @@ import java.io.IOException;
 
 public class AuthController extends HttpServlet {
 
-    UserService userService = new UserService();
-    SessionService sessionService = new SessionService();
+    private final static Logger LOGGER = Logger.getLogger(AuthController.class);
+    private UserService userService = new UserService();
+    private SessionService sessionService = new SessionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
+        LOGGER.info("Received GET request with params: " + Utils.requestParamsToString(req));
         String exit = req.getParameter("exit");
         if (exit != null && exit.equals("true")){
             String token = req.getSession().getAttribute("token").toString();
             sessionService.invalidateToken(token);
             req.getSession().invalidate();
             resp.sendRedirect(req.getContextPath() + "/");
+            LOGGER.info("Redirect to: " + req.getContextPath() + "/");
         } else {
             req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+            LOGGER.info("Param \"exit\" is null or not equals true. Show authentication form.");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
+        LOGGER.info("Received POST request with params: " + Utils.requestParamsToString(req));
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        LOGGER.info("Try to generate token.");
         String token = userService.authenticate(login, password);
+        LOGGER.info("Token = " + token);
         if (token != null){
             User user = userService.authenticate(token);
             req.getSession().setAttribute("token", token);
@@ -42,17 +52,11 @@ public class AuthController extends HttpServlet {
             req.getSession().setAttribute("userId", user.getId());
             req.getSession().setAttribute("userLogin", user.getLogin());
             resp.sendRedirect(req.getContextPath() + "/timesheet/");
-        } else resp.sendRedirect(req.getContextPath() + "/auth?errorMessage=authenticationFail");
-
-        /*JSONObject json = new JSONObject();
-        if (token == null) {
-            json.put("result", "failed");
-            resp.getWriter().println(json.toString());
+            LOGGER.info("Authentication succeeded. Send redirect to " + req.getContextPath() + "/timesheet/");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/auth?errorMessage=authenticationFail");
+            LOGGER.warn("Authentication failed. Send redirect to " +
+                    req.getContextPath() + "/auth?errorMessage=authenticationFail");
         }
-        else {
-            json.put("result", "success");
-            json.put("token", token);
-            resp.getWriter().println(json.toString());
-        }*/
     }
 }
