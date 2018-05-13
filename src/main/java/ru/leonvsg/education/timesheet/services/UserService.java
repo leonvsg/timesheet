@@ -1,15 +1,21 @@
 package ru.leonvsg.education.timesheet.services;
 
 import com.google.common.hash.Hashing;
-import ru.leonvsg.education.timesheet.entities.*;
 import ru.leonvsg.education.timesheet.Settings;
-import ru.leonvsg.education.timesheet.connections.*;
-import ru.leonvsg.education.timesheet.dao.basic.*;
-import ru.leonvsg.education.timesheet.dao.jdbc.*;
+import ru.leonvsg.education.timesheet.connections.ConnectionManager;
+import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
+import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
+import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
+import ru.leonvsg.education.timesheet.entities.Role;
+import ru.leonvsg.education.timesheet.entities.Session;
+import ru.leonvsg.education.timesheet.entities.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,8 +49,7 @@ public class UserService {
     }
 
     public boolean isValidPassword(String password){
-        if (password == null || password.length() < 5) return false;
-        return true;
+        return password != null && password.length() >= 5;
     }
 
     public List<User> get(){

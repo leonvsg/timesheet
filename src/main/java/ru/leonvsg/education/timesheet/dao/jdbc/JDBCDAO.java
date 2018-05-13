@@ -47,7 +47,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
-        if (entities == null || entities.size() == 0) {
+        if (entities == null || entities.isEmpty()) {
             return null;
         }
         if (entities.size() > 1) {
@@ -89,9 +89,6 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             entities = parseResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace(System.out);
-        }
-        if (entities == null || entities.size() == 0) {
-            return null;
         }
         return entities;
     }

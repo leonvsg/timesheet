@@ -1,17 +1,16 @@
 package ru.leonvsg.education.timesheet.dao.basic;
 
-import java.sql.SQLException;
 import java.util.List;
 
-public interface DAO<ENTITY, KEY> {
+public interface DAO<E, K> {
 
-    boolean create(ENTITY entity);
+    boolean create(E entity);
 
-    ENTITY read(KEY key) throws EntityPersistanceException;
+    E read(K key) throws EntityPersistanceException;
 
-    boolean update(ENTITY entity);
+    boolean update(E entity);
 
-    boolean delete(KEY key);
+    boolean delete(K key);
 
-    List<ENTITY> getAll();
+    List<E> getAll();
 }

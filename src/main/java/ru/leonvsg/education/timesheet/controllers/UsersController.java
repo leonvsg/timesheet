@@ -1,11 +1,9 @@
 package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.services.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +12,8 @@ import java.io.IOException;
 
 public class UsersController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(UsersController.class);
-    private UserService userService = new UserService();
+    private static final Logger LOGGER = Logger.getLogger(UsersController.class);
+    private static UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

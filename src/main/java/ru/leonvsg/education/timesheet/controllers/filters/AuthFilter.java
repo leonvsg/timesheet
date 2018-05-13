@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.controllers.filters;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.services.UserService;
-import ru.leonvsg.education.timesheet.services.Utils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class AuthFilter implements Filter {
 
-    private final static Logger LOGGER = Logger.getLogger(AuthFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
     private UserService userService = new UserService();
 
     @Override

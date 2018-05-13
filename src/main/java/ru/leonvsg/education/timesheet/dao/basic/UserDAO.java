@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.dao.basic;
 
 import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
-import java.util.Map;
 
 public interface UserDAO extends DAO<User, Integer> {
     User read(String login);

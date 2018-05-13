@@ -15,10 +15,10 @@ import java.util.List;
 public class RatingController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(RatingController.class);
-    private GroupService groupService = new GroupService();
-    private UserService userService = new UserService();
-    private LessonService lessonService = new LessonService();
-    private RatingService ratingService = new RatingService();
+    private static GroupService groupService = new GroupService();
+    private static UserService userService = new UserService();
+    private static LessonService lessonService = new LessonService();
+    private static RatingService ratingService = new RatingService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,7 +26,7 @@ public class RatingController extends HttpServlet {
         LOGGER.info("Received GET request with params: " + Utils.requestParamsToString(req));
         String token = req.getSession().getAttribute("token").toString();
         User user = userService.authenticate(token);
-        if (user.getRole().toUpperCase().equals(Role.ADMIN.toString())){
+        if (user.getRole().equalsIgnoreCase(Role.ADMIN.toString())){
             resp.sendRedirect(req.getContextPath() + "/");
             LOGGER.warn("User is ADMIN. Redirect to " + req.getContextPath() + "/");
             return;
@@ -38,7 +38,7 @@ public class RatingController extends HttpServlet {
         List<Group> groups = groupService.getGroups(user);
         if (id != null){
             lessons = lessonService.getLessons(id);
-            if (!user.getRole().toUpperCase().equals("STUDENT")) users = userService.getUsersByGroup(id);
+            if (!user.getRole().equalsIgnoreCase("STUDENT")) users = userService.getUsersByGroup(id);
             else users.add(user);
             ratings = ratingService.getRatingsByGroup(id);
         }

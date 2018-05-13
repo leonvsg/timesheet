@@ -6,8 +6,6 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCCourseDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
 import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.User;
-import sun.plugin2.gluegen.runtime.StructAccessor;
-
 import java.util.List;
 
 public class CourseService {

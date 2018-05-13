@@ -17,9 +17,9 @@ import java.util.List;
 
 public class UserController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(UserController.class);
-    private UserService userService = new UserService();
-    private GroupService groupService = new GroupService();
+    private static final Logger LOGGER = Logger.getLogger(UserController.class);
+    private static UserService userService = new UserService();
+    private static GroupService groupService = new GroupService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

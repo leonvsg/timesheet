@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class JDBCConnectionManager implements ConnectionManager {
 
-    private final static Logger LOGGER = Logger.getLogger(JDBCConnectionManager.class);
+    private static final Logger LOGGER = Logger.getLogger(JDBCConnectionManager.class);
 
     private JDBCConnectionManager(){ }
 

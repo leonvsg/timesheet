@@ -26,7 +26,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             );
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getRegDate().toString());
+            statement.setString(3, user.getRegDate());
             statement.setString(4, user.getRole());
             statement.setString(5, user.getName());
             statement.setString(6, user.getMiddleName());

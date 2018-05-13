@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Utils {
 
+    private Utils() {
+    }
+
     public static String requestParamsToString(HttpServletRequest request){
         if (request == null) return "{}";
         StringBuilder params = new StringBuilder("{");

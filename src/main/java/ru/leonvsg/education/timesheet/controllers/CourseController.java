@@ -19,10 +19,10 @@ import java.util.List;
 
 public class CourseController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(CourseController.class);
-    private CourseService courseService = new CourseService();
-    private UserService userService = new UserService();
-    private GroupService groupService = new GroupService();
+    private static final Logger LOGGER = Logger.getLogger(CourseController.class);
+    private static CourseService courseService = new CourseService();
+    private static UserService userService = new UserService();
+    private static GroupService groupService = new GroupService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,7 +51,7 @@ public class CourseController extends HttpServlet {
         List<Course> courses;
         User user = userService.authenticate(token);
         LOGGER.info("User's role is " + user.getRole() + ". Param display is " + display);
-        if (display != null && !user.getRole().toUpperCase().equals("ADMIN") && display.equals("my")){
+        if (display != null && !user.getRole().equalsIgnoreCase("ADMIN") && display.equals("my")){
             courses = courseService.getCoursesByUser(user);
             LOGGER.info("Show courses by user with id=" + user.getId());
         }
