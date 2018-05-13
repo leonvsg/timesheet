@@ -12,7 +12,7 @@ import java.io.IOException;
 public class AuthFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
-    private UserService userService = new UserService();
+    private final UserService userService = new UserService();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

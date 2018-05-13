@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCSessionDAO.class);
 
     public JDBCSessionDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -28,8 +31,8 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             statement.setInt(1, session.getUserId());
             statement.setString(2, session.getToken());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -49,8 +52,8 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
                 statement.setString(1, s);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -65,8 +68,8 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             statement.setInt(1, session.getUserId());
             statement.setString(2, session.getToken());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -80,8 +83,8 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             );
             statement.setString(1, s);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -126,7 +129,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return user;
     }

@@ -1,15 +1,19 @@
 package ru.leonvsg.education.timesheet.services;
 
 import com.google.common.hash.Hashing;
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.Settings;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
+import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
@@ -22,14 +26,23 @@ import java.util.regex.Pattern;
 
 public class UserService {
 
-    private ConnectionManager connectionManager = JDBCConnectionManager.getInstance();
-    private UserDAO userDAO = new JDBCUserDAO(connectionManager);
-    private SessionDAO sessionDAO = new JDBCSessionDAO(connectionManager);
-    private GroupDAO groupDAO = new JDBCGroupDAO(connectionManager);
+    private static final Logger LOGGER = Logger.getLogger(LessonService.class);
+    private UserDAO userDAO;
+    private SessionDAO sessionDAO;
+    private GroupDAO groupDAO;
 
-    public boolean isBusyLogin(String login){
-        if (login == null) return true;
-        return userDAO.read(login) != null;
+    public UserService() {
+        this(JDBCDAOFactory.getDAOFactory());
+    }
+
+    public UserService(DAOFactory daoFactory) {
+        userDAO = daoFactory.getDAO(User.class);
+        sessionDAO = daoFactory.getDAO(Session.class);
+        groupDAO = daoFactory.getDAO(Group.class);
+    }
+
+    public boolean isBusyLogin(String login) {
+        return login == null || userDAO.read(login) != null;
     }
 
     public boolean isValidLogin(String login){

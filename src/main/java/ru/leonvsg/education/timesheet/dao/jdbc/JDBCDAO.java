@@ -1,5 +1,6 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.DAO;
 import ru.leonvsg.education.timesheet.dao.basic.EntityPersistanceException;
@@ -9,9 +10,11 @@ import java.util.List;
 
 public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
 
+    private static final Logger LOGGER = Logger.getLogger(JDBCDAO.class);
+    protected static final String INVALID_PREPARED_STATEMENT_MESSAGE = "Something wrong with PreparedStatement";
     protected ConnectionManager connectionManager;
 
-    public JDBCDAO(ConnectionManager connectionManager) {
+    protected JDBCDAO(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
 
@@ -32,7 +35,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            LOGGER.error(e);
             return false;
         }
     }
@@ -45,7 +48,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             ResultSet resultSet = statement.executeQuery();
             entities = parseResultSet(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            LOGGER.error(e);
         }
         if (entities == null || entities.isEmpty()) {
             return null;
@@ -63,7 +66,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            LOGGER.error(e);
             return false;
         }
     }
@@ -75,7 +78,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            LOGGER.error(e);
             return false;
         }
     }
@@ -88,7 +91,7 @@ public abstract class JDBCDAO<ENTITY, KEY> implements DAO<ENTITY, KEY> {
             ResultSet resultSet = statement.executeQuery();
             entities = parseResultSet(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            LOGGER.error(e);
         }
         return entities;
     }

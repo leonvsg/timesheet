@@ -1,6 +1,6 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
-
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.CourseDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCCourseDAO.class);
 
     public JDBCCourseDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -29,8 +31,8 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
             statement.setString(2, course.getDescription());
             statement.setInt(3, course.getDuration());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -50,8 +52,8 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -68,8 +70,8 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
             statement.setInt(3, course.getDuration());
             statement.setInt(4, course.getId());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -83,8 +85,8 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -131,7 +133,7 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return groups;
     }

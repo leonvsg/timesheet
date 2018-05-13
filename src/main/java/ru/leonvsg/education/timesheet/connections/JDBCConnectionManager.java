@@ -9,15 +9,13 @@ import java.sql.SQLException;
 public class JDBCConnectionManager implements ConnectionManager {
 
     private static final Logger LOGGER = Logger.getLogger(JDBCConnectionManager.class);
+    private static ConnectionManager connectionManager;
 
     private JDBCConnectionManager(){ }
-
-    private static ConnectionManager connectionManager;
 
     public static ConnectionManager getInstance(){
         if (connectionManager == null){
             connectionManager = new JDBCConnectionManager();
-            LOGGER.debug("Connection manager was created");
         }
         return connectionManager;
     }
@@ -26,9 +24,7 @@ public class JDBCConnectionManager implements ConnectionManager {
     public Connection getConnection() {
         Connection connection = null;
         try {
-            LOGGER.debug("Try connect to DB driver. Driver name: " + Settings.DB_DRIVER_NAME);
             Class.forName(Settings.DB_DRIVER_NAME);
-            LOGGER.debug("Try to get connection");
             connection = DriverManager.getConnection(
                     Settings.DB_CONNECTION_URL,
                     Settings.DB_CONNECTION_USERNAME,

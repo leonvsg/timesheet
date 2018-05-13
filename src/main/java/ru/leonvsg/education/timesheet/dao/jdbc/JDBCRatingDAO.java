@@ -1,5 +1,6 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.RatingDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCRatingDAO.class);
 
     public JDBCRatingDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -29,8 +32,8 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             statement.setInt(3, rating.getValue());
             statement.setString(4, rating.getDescription());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -50,8 +53,8 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -69,8 +72,8 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             statement.setString(4, rating.getDescription());
             statement.setInt(5, rating.getId());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -84,8 +87,8 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -138,7 +141,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return user;
     }
@@ -168,7 +171,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return lesson;
     }

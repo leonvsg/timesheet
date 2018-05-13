@@ -15,8 +15,8 @@ import java.io.IOException;
 public class AuthController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(AuthController.class);
-    private static UserService userService = new UserService();
-    private static SessionService sessionService = new SessionService();
+    private final UserService userService = new UserService();
+    private final SessionService sessionService = new SessionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

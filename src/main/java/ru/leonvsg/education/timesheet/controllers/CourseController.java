@@ -20,9 +20,9 @@ import java.util.List;
 public class CourseController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(CourseController.class);
-    private static CourseService courseService = new CourseService();
-    private static UserService userService = new UserService();
-    private static GroupService groupService = new GroupService();
+    private final CourseService courseService = new CourseService();
+    private final UserService userService = new UserService();
+    private final GroupService groupService = new GroupService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,8 +1,13 @@
 package ru.leonvsg.education.timesheet.services;
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.CourseDAO;
+import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
+import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCCourseDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
 import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.User;
@@ -10,21 +15,32 @@ import java.util.List;
 
 public class CourseService {
 
-    public boolean addCourse(String name, String description, Integer duration){
-        return new JDBCCourseDAO(connectionManager).create(new Course(null, name, description, duration));
+    private static final Logger LOGGER = Logger.getLogger(CourseService.class);
+    private CourseDAO courseDAO;
+    private UserDAO userDAO;
+
+    public CourseService() {
+        this(JDBCDAOFactory.getDAOFactory());
     }
 
-    private ConnectionManager connectionManager = JDBCConnectionManager.getInstance();
+    public CourseService(DAOFactory daoFactory) {
+        courseDAO = daoFactory.getDAO(Course.class);
+        userDAO = daoFactory.getDAO(User.class);
+    }
+
+    public boolean addCourse(String name, String description, Integer duration){
+        return courseDAO.create(new Course(null, name, description, duration));
+    }
 
     public List<Course> getAllCourses(){
-        return new JDBCCourseDAO(connectionManager).getAll();
+        return courseDAO.getAll();
     }
 
     public Course getCourseById(Integer id){
-        return new JDBCCourseDAO(connectionManager).read(id);
+        return courseDAO.read(id);
     }
 
     public List<Course> getCoursesByUser(User user){
-        return new JDBCUserDAO(connectionManager).getCourses(user);
+        return userDAO.getCourses(user);
     }
 }

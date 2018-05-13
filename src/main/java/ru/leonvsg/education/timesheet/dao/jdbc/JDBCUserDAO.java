@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -11,6 +12,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCUserDAO.class);
 
     public JDBCUserDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -32,8 +35,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             statement.setString(6, user.getMiddleName());
             statement.setString(7, user.getSurname());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -53,8 +56,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -74,8 +77,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             statement.setString(6, user.getSurname());
             statement.setInt(7, user.getId());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -89,8 +92,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -138,7 +141,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return user;
     }
@@ -166,7 +169,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return ratings;
     }
@@ -198,7 +201,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return groups;
     }
@@ -223,7 +226,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return sessions;
     }
@@ -256,7 +259,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return courses;
     }

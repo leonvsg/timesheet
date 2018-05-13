@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCGroupDAO.class);
 
     public JDBCGroupDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -31,8 +34,8 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             statement.setString(4, group.getExpDate());
             statement.setString(5, group.getDescription());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -52,8 +55,8 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -72,8 +75,8 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             statement.setString(5, group.getDescription());
             statement.setInt(6, group.getId());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -87,8 +90,8 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -143,7 +146,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return groups;
     }
@@ -180,7 +183,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return groups;
     }
@@ -214,7 +217,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return users;
     }
@@ -241,7 +244,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return lessons;
     }
@@ -271,7 +274,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return course;
     }
@@ -305,7 +308,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return ratings;
     }

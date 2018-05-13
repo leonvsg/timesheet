@@ -1,56 +1,66 @@
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import ru.leonvsg.education.timesheet.connections.ConnectionManager;
-import ru.leonvsg.education.timesheet.connections.JDBCConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
+import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
+import ru.leonvsg.education.timesheet.entities.Group;
+import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
 
-import static org.powermock.api.mockito.PowerMockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ConnectionManager.class, JDBCConnectionManager.class, JDBCUserDAO.class, UserDAO.class, JDBCSessionDAO.class})
 public class UserServiceTest {
 
-    UserService userService;
-    ConnectionManager connectionManager;
-    JDBCUserDAO userDAO;
-    SessionDAO sessionDAO;
-    User user;
-    String busyLogin = "BusyLogin";
-    String freeLogin = "FreeLogin";
-    String nullLogin = null;
-    String[] validLogin = {"test@test.test", "test@test.test.test"};
-    String[] invalidLogin = {"test", "test@test", "test@test.testtest"};
+    private UserService userService;
+    private UserDAO userDAO;
+    private SessionDAO sessionDAO;
+    private GroupDAO groupDAO;
+    private User user;
+    private DAOFactory daoFactory;
+    private String busyLogin = "BusyLogin";
+    private String freeLogin = "FreeLogin";
+    private String nullLogin = null;
+    private String[] validLogins = {"test@test.test", "test@test.test.test"};
+    private String[] invalidLogins = {"test", "test@test", "test@test.testtest"};
 
     @Before
     public void before() throws Exception {
-        connectionManager = mock(ConnectionManager.class);
-        mockStatic(JDBCConnectionManager.class);
-        when(JDBCConnectionManager.getInstance()).thenReturn(connectionManager);
         user = mock(User.class);
         userDAO = mock(JDBCUserDAO.class);
-        when(userDAO.read("BusyLogin")).thenReturn(user);
-        when(userDAO.read("FreeLogin")).thenReturn(null);
-        whenNew(UserDAO.class).withAnyArguments().thenReturn(userDAO);
-        userService = new UserService();
+        sessionDAO = mock(JDBCSessionDAO.class);
+        groupDAO = mock(JDBCGroupDAO.class);
+        daoFactory = mock(JDBCDAOFactory.class);
+        when(daoFactory.getDAO(User.class)).thenReturn(userDAO);
+        when(daoFactory.getDAO(Group.class)).thenReturn(groupDAO);
+        when(daoFactory.getDAO(Session.class)).thenReturn(sessionDAO);
+        when(userDAO.read(busyLogin)).thenReturn(user);
+        when(userDAO.read(freeLogin)).thenReturn(null);
+        userService = new UserService(daoFactory);
     }
 
     @Test
     public void isBusyLoginTest(){
-        verifyStatic();
-        assertTrue(userService.isBusyLogin("FreeLogin"));
-        verifyStatic();
-        assertFalse(userService.isBusyLogin("FreeLogin"));
-        verifyStatic();
-        assertFalse(userService.isBusyLogin(null));
+        assertTrue(userService.isBusyLogin(busyLogin));
+        assertFalse(userService.isBusyLogin(freeLogin));
+        assertTrue(userService.isBusyLogin(nullLogin));
     }
 
+    @Test
+    public void isValidLoginTest(){
+        for (String login: validLogins) {
+            assertTrue(userService.isValidLogin(login));
+        }
+        for (String login: invalidLogins) {
+            assertFalse(userService.isValidLogin(login));
+        }
+    }
 }

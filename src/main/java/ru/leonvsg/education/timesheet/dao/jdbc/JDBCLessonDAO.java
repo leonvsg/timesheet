@@ -1,5 +1,6 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
+import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.LessonDAO;
 import ru.leonvsg.education.timesheet.entities.*;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCLessonDAO.class);
 
     public JDBCLessonDAO(ConnectionManager connectionManager) {
         super(connectionManager);
@@ -28,8 +31,8 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             statement.setString(2, lesson.getDescription());
             statement.setString(3, lesson.getDate());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -49,8 +52,8 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -67,8 +70,8 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             statement.setString(3, lesson.getDate());
             statement.setInt(4, lesson.getId());
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -82,8 +85,8 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            throw new SQLException("Something wrong with PreparedStatement");
+            LOGGER.error(e);
+            throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
     }
@@ -133,7 +136,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return group;
     }
@@ -161,7 +164,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return ratings;
     }

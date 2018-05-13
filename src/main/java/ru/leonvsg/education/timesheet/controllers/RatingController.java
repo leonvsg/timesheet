@@ -15,10 +15,10 @@ import java.util.List;
 public class RatingController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(RatingController.class);
-    private static GroupService groupService = new GroupService();
-    private static UserService userService = new UserService();
-    private static LessonService lessonService = new LessonService();
-    private static RatingService ratingService = new RatingService();
+    private final GroupService groupService = new GroupService();
+    private final UserService userService = new UserService();
+    private final LessonService lessonService = new LessonService();
+    private final RatingService ratingService = new RatingService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

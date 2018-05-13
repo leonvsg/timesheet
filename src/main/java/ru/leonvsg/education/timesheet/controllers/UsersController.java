@@ -13,7 +13,7 @@ import java.io.IOException;
 public class UsersController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(UsersController.class);
-    private static UserService userService = new UserService();
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
