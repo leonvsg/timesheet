@@ -18,7 +18,7 @@
         <div class="container">
             <main class="content">
                 <div class="panel panel-info">
-                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseUserInfo" aria-expanded="false" aria-controls="collapseUserInfo">
+                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseUserInfo" aria-expanded="true" aria-controls="collapseUserInfo">
                         <h3 class="panel-title">Detail user information</h3>
                     </div>
                     <c:if test="${param.errorMessage != null}">
@@ -26,7 +26,7 @@
                             <c:out value="${param.errorMessage}"/>
                         </div>
                     </c:if>
-                    <div class="collapse" id="collapseUserInfo">
+                    <div class="collapse in" id="collapseUserInfo">
                     <form class="auth-form" role="form" class="form-inline" action="${pageContext.request.contextPath}user" method="post">
                         <input name="id" value="<c:out value="${user.getId()}"/>" hidden/>
                         <table class="table">
@@ -81,10 +81,10 @@
                     </div>
                 </div>
                 <div class="panel panel-info">
-                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
+                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="true" aria-controls="collapseGroups">
                         <h3 class="panel-title">Groups</h3>
                     </div>
-                    <div class="collapse" id="collapseGroups">
+                    <div class="collapse in" id="collapseGroups">
                     <table class="table">
                         <tr>
                             <td>Id</td>
