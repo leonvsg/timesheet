@@ -21,7 +21,7 @@ public class UsersController extends HttpServlet {
         LOGGER.info("Received GET request with params: " + Utils.requestParamsToString(req));
         String token = req.getSession().getAttribute("token").toString();
         if (userService.verifyRole(token) == Role.ADMIN){
-            req.setAttribute("users", userService.get());
+            req.setAttribute("users", userService.getAllUsers());
             req.getRequestDispatcher("/users.jsp").forward(req, resp);
             LOGGER.info("User is ADMIN. Show users list");
         } else {

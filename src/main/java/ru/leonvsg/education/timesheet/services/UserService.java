@@ -65,7 +65,7 @@ public class UserService {
         return password != null && password.length() >= 5;
     }
 
-    public List<User> get(){
+    public List<User> getAllUsers(){
         return userDAO.getAll();
     }
 

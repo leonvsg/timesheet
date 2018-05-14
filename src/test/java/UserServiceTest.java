@@ -16,6 +16,7 @@ import ru.leonvsg.education.timesheet.services.UserService;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
@@ -28,13 +29,6 @@ public class UserServiceTest {
     private DAOFactory daoFactory;
     private String busyLogin = "BusyLogin";
     private String freeLogin = "FreeLogin";
-    private String nullLogin = null;
-    private String[] validLogins = {"test@test.test", "test@test.test.test"};
-    private String[] invalidLogins = {"test", "test@test", "test@test.testtest"};
-    private String[] validRoles = {"ADMIN", "student", "LeCtOr"};
-    private String invalidRole = "role";
-    private String validPassword = "password";
-    private String[] invalidPasswords = {"pass", null};
 
     @Before
     public void before() {
@@ -55,26 +49,43 @@ public class UserServiceTest {
     public void isBusyLoginTest(){
         assertTrue(userService.isBusyLogin(busyLogin));
         assertFalse(userService.isBusyLogin(freeLogin));
-        assertTrue(userService.isBusyLogin(nullLogin));
+        assertTrue(userService.isBusyLogin(null));
     }
 
     @Test
     public void isValidLoginTest(){
+        String[] validLogins = {"test@test.test", "test@test.test.test"};
         for (String login: validLogins) assertTrue(userService.isValidLogin(login));
+        String[] invalidLogins = {"test", "test@test", "test@test.testtest"};
         for (String login: invalidLogins) assertFalse(userService.isValidLogin(login));
     }
 
     @Test
     public void isValidRoleTest(){
+        String[] validRoles = {"ADMIN", "student", "LeCtOr"};
         for (String role : validRoles) assertTrue(userService.isValidRole(role));
+        String invalidRole = "role";
         assertFalse(userService.isValidRole(invalidRole));
     }
 
     @Test
     public void isValidPasswordTest(){
+        String[] invalidPasswords = {"pass", null};
         for (String password: invalidPasswords) assertFalse(userService.isValidPassword(password));
+        String validPassword = "password";
         assertTrue(userService.isValidPassword(validPassword));
     }
 
+    @Test
+    public void getAllUsersTest(){
+        userService.getAllUsers();
+        verify(userDAO).getAll();
+    }
 
+    @Test
+    public void getUserTest(){
+        Integer id = 0;
+        userService.getUser(id);
+        verify(userDAO).read(id);
+    }
 }
