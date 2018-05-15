@@ -15,6 +15,7 @@ import ru.leonvsg.education.timesheet.services.UserService;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,7 @@ public class UserServiceTest {
     private DAOFactory daoFactory;
     private String busyLogin = "BusyLogin";
     private String freeLogin = "FreeLogin";
+    private String token = "token";
 
     @Before
     public void before() {
@@ -42,6 +44,8 @@ public class UserServiceTest {
         when(daoFactory.getDAO(Session.class)).thenReturn(sessionDAO);
         when(userDAO.read(busyLogin)).thenReturn(user);
         when(userDAO.read(freeLogin)).thenReturn(null);
+        when(sessionDAO.getUser(token)).thenReturn(null);
+
         userService = new UserService(daoFactory);
     }
 
@@ -87,5 +91,15 @@ public class UserServiceTest {
         Integer id = 0;
         userService.getUser(id);
         verify(userDAO).read(id);
+    }
+
+    @Test
+    public void authenticateTestWithToken(){
+        userService.authenticate(token);
+        verify(sessionDAO).getUser(token);
+    }
+
+    @Test
+    public void verifyRoleTest(){
     }
 }
