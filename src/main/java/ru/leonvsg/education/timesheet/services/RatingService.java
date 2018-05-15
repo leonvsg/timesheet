@@ -23,7 +23,7 @@ public class RatingService {
     }
 
     public List<Rating> getRatingsByGroup(Group group){
-        return getRatingsByGroup(group.getId());
+        return groupDAO.getRating(group);
     }
 
     public List<Rating> getRatingsByGroup(Integer groupId){

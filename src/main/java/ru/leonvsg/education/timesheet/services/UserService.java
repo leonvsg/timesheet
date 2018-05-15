@@ -72,16 +72,8 @@ public class UserService {
     public boolean register(String login, String password, String role, String name, String middlename, String surname){
         final String hashedPassword = getHashedPassword(password);
         return userDAO.create(
-                new User(
-                        null,
-                        login,
-                        hashedPassword,
-                        new Date().toString(),
-                        role.toUpperCase(),
-                        name,
-                        middlename,
-                        surname
-                ));
+                new User(null, login, hashedPassword, new Date().toString(),
+                        role.toUpperCase(), name, middlename, surname));
     }
 
     public String getHashedPassword(String password) {
