@@ -9,16 +9,13 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
 import ru.leonvsg.education.timesheet.entities.Group;
+import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
@@ -27,31 +24,35 @@ public class UserServiceTest {
     private SessionDAO sessionDAO;
     private GroupDAO groupDAO;
     private User user;
-    private DAOFactory daoFactory;
-    private String busyLogin = "BusyLogin";
+    private String login = "Login";
     private String freeLogin = "FreeLogin";
-    private String token = "token";
+    private String token = "Token";
+    private String password = "Password";
+    private String hashedPassword = "e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a";
 
     @Before
     public void before() {
         user = mock(User.class);
+        when(user.getRole()).thenReturn("ADMIN");
+        when(user.getPassword()).thenReturn(hashedPassword);
         userDAO = mock(JDBCUserDAO.class);
+        when(userDAO.read(login)).thenReturn(user);
+        when(userDAO.read(freeLogin)).thenReturn(null);
         sessionDAO = mock(JDBCSessionDAO.class);
+        when(sessionDAO.getUser(token)).thenReturn(user);
+        when(sessionDAO.getUser(null)).thenReturn(null);
+        when(sessionDAO.create(any())).thenReturn(true);
         groupDAO = mock(JDBCGroupDAO.class);
-        daoFactory = mock(JDBCDAOFactory.class);
+        DAOFactory daoFactory = mock(JDBCDAOFactory.class);
         when(daoFactory.getDAO(User.class)).thenReturn(userDAO);
         when(daoFactory.getDAO(Group.class)).thenReturn(groupDAO);
         when(daoFactory.getDAO(Session.class)).thenReturn(sessionDAO);
-        when(userDAO.read(busyLogin)).thenReturn(user);
-        when(userDAO.read(freeLogin)).thenReturn(null);
-        when(sessionDAO.getUser(token)).thenReturn(null);
-
         userService = new UserService(daoFactory);
     }
 
     @Test
     public void isBusyLoginTest(){
-        assertTrue(userService.isBusyLogin(busyLogin));
+        assertTrue(userService.isBusyLogin(login));
         assertFalse(userService.isBusyLogin(freeLogin));
         assertTrue(userService.isBusyLogin(null));
     }
@@ -76,8 +77,7 @@ public class UserServiceTest {
     public void isValidPasswordTest(){
         String[] invalidPasswords = {"pass", null};
         for (String password: invalidPasswords) assertFalse(userService.isValidPassword(password));
-        String validPassword = "password";
-        assertTrue(userService.isValidPassword(validPassword));
+        assertTrue(userService.isValidPassword(password));
     }
 
     @Test
@@ -94,6 +94,19 @@ public class UserServiceTest {
     }
 
     @Test
+    public void getHashedPasswordTest(){
+        assertEquals(userService.getHashedPassword(password), hashedPassword);
+    }
+
+    @Test
+    public void authenticateWithLoginAndPassword(){
+        assertNotNull(userService.authenticate(login, password));
+        assertNull(userService.authenticate(null, null));
+        assertNull(userService.authenticate(null, password));
+        assertNull(userService.authenticate(login, null));
+    }
+
+    @Test
     public void authenticateTestWithToken(){
         userService.authenticate(token);
         verify(sessionDAO).getUser(token);
@@ -101,5 +114,21 @@ public class UserServiceTest {
 
     @Test
     public void verifyRoleTest(){
+        assertEquals(Role.ADMIN, userService.verifyRole(token));
+        assertNull(userService.verifyRole(null));
+        assertNull(userService.verifyRole(""));
+    }
+
+    @Test
+    public void updateUserTest(){
+        userService.updateUser(user);
+        verify(userDAO).update(user);
+    }
+
+    @Test
+    public void getUsersByGroupTest(){
+        Integer groupId = 0;
+        userService.getUsersByGroup(groupId);
+        verify(groupDAO).getUsers(groupId);
     }
 }
