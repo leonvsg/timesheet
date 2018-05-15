@@ -14,6 +14,8 @@ import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -91,6 +93,13 @@ public class UserServiceTest {
         Integer id = 0;
         userService.getUser(id);
         verify(userDAO).read(id);
+    }
+
+    @Test
+    public void register(){
+        String role = "ROLE";
+        userService.register(login, password, role, null, null, null);
+        verify(userDAO).create(any(User.class));
     }
 
     @Test
