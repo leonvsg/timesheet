@@ -17,44 +17,53 @@
         <c:import url="/menu.jsp"/>
         <div class="container">
             <main class="content">
-                <table>
-                    <tr>
-                        <td>Id</td>
-                        <td>Name</td>
-                        <td>Description</td>
-                        <td>Duration</td>
-                    </tr>
-                    <tr>
-                        <td><c:out value="${course.getId()}"/></td>
-                        <td><c:out value="${course.getName()}"/></td>
-                        <td><c:out value="${course.getDescription()}"/></td>
-                        <td><c:out value="${course.getDuration()}"/></td>
-                    </tr>
-                </table>
-                <br>
-                <h4>Groups</h4>
-                <table>
-                    <tr>
-                        <td>Id</td>
-                        <td>Name</td>
-                        <td>Description</td>
-                        <td>Start Date</td>
-                        <td>Expiration Date</td>
-                    </tr>
-                    <c:forEach items="${groups}" var="group">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><c:out value="${course.getName()}"/></h3>
+                    </div>
+                    <table class="table">
                         <tr>
-                            <td><c:out value="${group.getId()}"/></td>
-                            <td>
-                                <a href="<c:url value="/timesheet/group?id=${group.getId()}"/>">
-                                    <c:out value="${group.getName()}"/>
-                                </a>
-                            </td>
-                            <td><c:out value="${group.getDescription()}"/></td>
-                            <td><c:out value="${group.getStartDate()}"/></td>
-                            <td><c:out value="${group.getExpDate()}"/></td>
+                            <td><strong>Id: </strong><c:out value="${course.getId()}"/></td>
+                            <td><strong>Duration: </strong><c:out value="${course.getDuration()}"/></td>
                         </tr>
-                    </c:forEach>
-                </table>
+                    </table>
+                    <div class="panel-footer"><c:out value="${course.getDescription()}"/></div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="true" aria-controls="collapseGroups">
+                        <h4 class="panel-title">Groups</h4>
+                    </div>
+                    <div class="collapse in" id="collapseGroups">
+                        <table class="table">
+                            <tr>
+                                <td>Id</td>
+                                <td>Name</td>
+                                <td>Course</td>
+                                <td>Description</td>
+                                <td>Start Date</td>
+                                <td>Expiration Date</td>
+                            </tr>
+                            <c:forEach items="${groups}" var="group">
+                                <tr>
+                                    <td><c:out value="${group.getId()}"/></td>
+                                    <td>
+                                        <a href="<c:url value="/timesheet/group?id=${group.getId()}"/>">
+                                            <c:out value="${group.getName()}"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="<c:url value="/timesheet/course?id=${group.getCourse().getId()}"/>">
+                                            <c:out value="${group.getCourse().getName()}"/>
+                                        </a>
+                                    </td>
+                                    <td><c:out value="${group.getDescription()}"/></td>
+                                    <td><c:out value="${group.getStartDate()}"/></td>
+                                    <td><c:out value="${group.getExpDate()}"/></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
             </main><!-- .content -->
         </div><!-- .container-->
     </div><!-- .middle-->
