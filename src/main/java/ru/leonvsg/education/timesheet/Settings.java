@@ -9,4 +9,8 @@ public class Settings {
     public static final String DB_CONNECTION_USERNAME = "timesheet@educationpsqldb";
     public static final String DB_CONNECTION_PASSWORD = "timesheet";
     public static final String VALID_LOGIN_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+
+
+    //локальная база jdbc:postgresql://localhost:5432/education timesheet/timesheet
+    //база в ажуре jdbc:postgresql://educationpsqldb.postgres.database.azure.com:5432/education   timesheet@educationpsqldb/timesheet
 }
