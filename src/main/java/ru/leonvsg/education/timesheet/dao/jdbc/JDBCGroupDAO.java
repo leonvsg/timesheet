@@ -131,7 +131,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                             "LEFT JOIN timesheet.groups AS g ON l.groupid = g.groupid" +
                             "WHERE l.lessonid=?");
             statement.setInt(1, lessonId);
-            group = executor(statement);
+            group = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -151,7 +151,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                     "SELECT * FROM timesheet.groups WHERE courseid=?");
             statement.setInt(1, courseId);
             ResultSet resultSet = statement.executeQuery();
-            groups = multiExecutor(statement);
+            groups = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -173,7 +173,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                             "LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
                             "WHERE m.userid=?");
             statement.setInt(1, userId);
-            groups = multiExecutor(statement);
+            groups = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

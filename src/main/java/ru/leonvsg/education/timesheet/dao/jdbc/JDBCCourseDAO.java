@@ -124,7 +124,7 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
                             "LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid" +
                             "WHERE g.groupid=?");
             statement.setInt(1, groupId);
-            course = executor(statement);
+            course = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -147,7 +147,7 @@ public class JDBCCourseDAO extends JDBCDAO<Course, Integer> implements CourseDAO
                             "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid " +
                             "WHERE m.userid=? GROUP BY c.courseid");
             statement.setInt(1, userId);
-            courses = multiExecutor(statement);
+            courses = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

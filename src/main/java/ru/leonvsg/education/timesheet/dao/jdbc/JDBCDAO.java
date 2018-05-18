@@ -96,7 +96,7 @@ public abstract class JDBCDAO<E, K> implements DAO<E, K> {
         return entities;
     }
 
-    protected E executor(PreparedStatement statement){
+    protected E execute(PreparedStatement statement) throws EntityPersistanceException{
         List<E> entities = null;
         try (ResultSet resultSet = statement.executeQuery()){
             entities = parseResultSet(resultSet);
@@ -112,7 +112,7 @@ public abstract class JDBCDAO<E, K> implements DAO<E, K> {
         return entities.iterator().next();
     }
 
-    protected List<E> multiExecutor(PreparedStatement statement){
+    protected List<E> executeMulti(PreparedStatement statement){
         List<E> entities = null;
         try (ResultSet resultSet = statement.executeQuery();) {
             entities = parseResultSet(resultSet);

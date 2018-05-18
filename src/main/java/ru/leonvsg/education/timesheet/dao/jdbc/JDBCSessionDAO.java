@@ -116,7 +116,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT token FROM timesheet.sessions WHERE userid=?");
             statement.setInt(1, userId);
-            sessions = multiExecutor(statement);
+            sessions = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

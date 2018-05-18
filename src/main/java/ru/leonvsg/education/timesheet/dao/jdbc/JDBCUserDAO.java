@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.dao.jdbc;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
-import ru.leonvsg.education.timesheet.dao.basic.EntityPersistanceException;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.entities.*;
 import java.sql.Connection;
@@ -127,7 +126,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM timesheet.users WHERE login=?");
             statement.setString(1, login);
-            user = executor(statement);
+            user = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -144,7 +143,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                             "LEFT JOIN timesheet.users AS u ON s.userid = u.userid " +
                             "WHERE s.token=?");
             statement.setString(1, token);
-            user = executor(statement);
+            user = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -166,7 +165,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                             "LEFT JOIN timesheet.users AS u ON r.userid = u.userid" +
                             "WHERE r.id=?");
             statement.setInt(1, ratingId);
-            user = executor(statement);
+            user = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -188,7 +187,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                             "LEFT JOIN timesheet.users AS u ON m.userid = u.userid " +
                             "WHERE m.groupid=?");
             statement.setInt(1, groupId);
-            users = multiExecutor(statement);
+            users = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

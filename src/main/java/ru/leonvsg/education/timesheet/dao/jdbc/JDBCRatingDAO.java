@@ -124,7 +124,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM timesheet.rating WHERE userid=?");
             statement.setInt(1, userId);
-            ratings = multiExecutor(statement);
+            ratings = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -143,7 +143,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM timesheet.rating WHERE lessonid=?");
             statement.setInt(1, lessonId);
-           ratings = multiExecutor(statement);
+           ratings = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -166,7 +166,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
                             "WHERE l.groupid=?"
             );
             statement.setInt(1,groupId);
-            ratings = multiExecutor(statement);
+            ratings = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

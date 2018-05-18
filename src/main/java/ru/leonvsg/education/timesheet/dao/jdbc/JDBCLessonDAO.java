@@ -124,7 +124,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
                             "LEFT JOIN timesheet.lessons AS l ON r.lessonid=l.lessonid" +
                             "WHERE r.id=?");
             statement.setInt(1, ratingId);
-            lesson = executor(statement);
+            lesson = execute(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -143,7 +143,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM timesheet.lessons WHERE groupid=?");
             statement.setInt(1, groupId);
-            lessons = multiExecutor(statement);
+            lessons = executeMulti(statement);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
