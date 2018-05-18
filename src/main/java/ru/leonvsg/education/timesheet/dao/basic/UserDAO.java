@@ -4,21 +4,16 @@ import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
 
 public interface UserDAO extends DAO<User, Integer> {
-    User read(String login);
 
-    List<Rating> getRating(User user);
+    User getUserByLogin(String login);
 
-    List<Rating> getRating(Integer userId);
+    User getUserByToken(String token);
 
-    List<Group> getGroups(User user);
+    User getUserByRating(Rating rating);
 
-    List<Group> getGroups(Integer userId);
+    User getUserByRating(Integer ratingId);
 
-    List<Session> getSessions(User user);
+    List<User> getUsersByGroup(Group group);
 
-    List<Session> getSessions(Integer userId);
-
-    List<Course> getCourses(User user);
-
-    List<Course> getCourses(Integer userId);
+    List<User> getUsersByGroup(Integer groupId);
 }

@@ -4,7 +4,6 @@ import com.google.common.hash.Hashing;
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.Settings;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
-import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
@@ -12,7 +11,6 @@ import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +23,6 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(LessonService.class);
     private UserDAO userDAO;
     private SessionDAO sessionDAO;
-    private GroupDAO groupDAO;
 
     public UserService() {
         this(JDBCDAOFactory.getDAOFactory());
@@ -34,11 +31,10 @@ public class UserService {
     public UserService(DAOFactory daoFactory) {
         userDAO = daoFactory.getDAO(User.class);
         sessionDAO = daoFactory.getDAO(Session.class);
-        groupDAO = daoFactory.getDAO(Group.class);
     }
 
     public boolean isBusyLogin(String login) {
-        return login == null || userDAO.read(login) != null;
+        return login == null || userDAO.getUserByLogin(login) != null;
     }
 
     public boolean isValidLogin(String login){
@@ -85,7 +81,7 @@ public class UserService {
     public String authenticate(String login, String password){
         if (login == null || password == null) return null;
         final String hashedPassword = getHashedPassword(password);
-        User user = userDAO.read(login);
+        User user = userDAO.getUserByLogin(login);
         if (user == null || !hashedPassword.equals(user.getPassword())) return null;
         String token = UUID.randomUUID().toString();
         if (sessionDAO.create(new Session(user, token))) return token;
@@ -93,12 +89,12 @@ public class UserService {
     }
 
     public User authenticate(String token){
-        return sessionDAO.getUser(token);
+        return userDAO.getUserByToken(token);
     }
 
     public Role verifyRole(String token) {
         if (token == null) return null;
-        User user = sessionDAO.getUser(token);
+        User user = userDAO.getUserByToken(token);
         if (user == null) return null;
         return Role.valueOf(user.getRole());
     }
@@ -108,7 +104,7 @@ public class UserService {
     }
 
     public List<User> getUsersByGroup(Integer groupId){
-        return groupDAO.getUsers(groupId);
+        return userDAO.getUsersByGroup(groupId);
     }
 
 }

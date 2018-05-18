@@ -1,7 +1,6 @@
 package ru.leonvsg.education.timesheet.services;
 
 import org.apache.log4j.Logger;
-import ru.leonvsg.education.timesheet.dao.basic.CourseDAO;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
@@ -14,7 +13,6 @@ import java.util.List;
 public class GroupService {
 
     private static final Logger LOGGER = Logger.getLogger(GroupService.class);
-    private CourseDAO courseDAO;
     private GroupDAO groupDAO;
 
     public GroupService() {
@@ -22,7 +20,6 @@ public class GroupService {
     }
 
     public GroupService(DAOFactory daoFactory) {
-        courseDAO = daoFactory.getDAO(Course.class);
         groupDAO = daoFactory.getDAO(Group.class);
     }
 
@@ -31,7 +28,7 @@ public class GroupService {
     }
 
     public List<Group> getGroups(Course course){
-        return courseDAO.getGroups(course);
+        return groupDAO.getGroupsByCourse(course);
     }
 
     public List<Group> getGroups(User user){

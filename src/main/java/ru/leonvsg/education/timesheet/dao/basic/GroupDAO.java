@@ -5,23 +5,19 @@ import java.util.List;
 
 public interface GroupDAO extends DAO<Group, Integer> {
 
-    List<User> getUsers(Group group);
+    Group getGroupByLesson(Lesson lesson);
 
-    List<User> getUsers(Integer groupId);
+    Group getGroupByLesson(Integer lessonId);
 
-    List<Lesson> getLessons(Group group);
+    List<Group> getGroupsByCourse(Course course);
 
-    List<Lesson> getLessons(Integer groupId);
+    List<Group> getGroupsByCourse(Integer courseId);
 
-    Course getCourse(Group group);
+    List<Group> getGroupsByUser(User user);
 
-    Course getCourse(Integer groupId);
+    List<Group> getGroupsByUser(Integer userId);
 
     List<Group> getGroupsWithCourses();
 
     List<Group> getGroupsWithCourses(User user);
-
-    List<Rating> getRating(Group group);
-
-    List<Rating> getRating(Integer groupId);
 }

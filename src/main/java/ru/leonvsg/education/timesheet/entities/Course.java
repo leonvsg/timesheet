@@ -1,6 +1,6 @@
 package ru.leonvsg.education.timesheet.entities;
 
-public class Course {
+public class Course implements Entity {
 
     private Integer id;
     private String name;

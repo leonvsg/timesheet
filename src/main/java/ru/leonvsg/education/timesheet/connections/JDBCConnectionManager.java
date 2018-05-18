@@ -30,7 +30,7 @@ public class JDBCConnectionManager implements ConnectionManager {
                     Settings.DB_CONNECTION_USERNAME,
                     Settings.DB_CONNECTION_PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
         return connection;
     }

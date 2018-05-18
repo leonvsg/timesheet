@@ -14,8 +14,6 @@ import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.UserService;
 
-import java.util.Date;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -38,8 +36,8 @@ public class UserServiceTest {
         when(user.getRole()).thenReturn("ADMIN");
         when(user.getPassword()).thenReturn(hashedPassword);
         userDAO = mock(JDBCUserDAO.class);
-        when(userDAO.read(login)).thenReturn(user);
-        when(userDAO.read(freeLogin)).thenReturn(null);
+        when(userDAO.getByLogin(login)).thenReturn(user);
+        when(userDAO.getByLogin(freeLogin)).thenReturn(null);
         sessionDAO = mock(JDBCSessionDAO.class);
         when(sessionDAO.getUser(token)).thenReturn(user);
         when(sessionDAO.getUser(null)).thenReturn(null);

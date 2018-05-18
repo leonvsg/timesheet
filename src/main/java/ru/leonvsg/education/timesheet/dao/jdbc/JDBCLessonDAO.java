@@ -31,7 +31,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             statement.setString(2, lesson.getDescription());
             statement.setString(3, lesson.getDate());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -52,7 +52,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -70,7 +70,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             statement.setString(3, lesson.getDate());
             statement.setInt(4, lesson.getId());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -85,7 +85,7 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -110,62 +110,44 @@ public class JDBCLessonDAO extends JDBCDAO<Lesson, Integer> implements LessonDAO
     }
 
     @Override
-    public Group getGroup(Lesson lesson) {
-        return getGroup(lesson.getId());
+    public Lesson getLessonByRating(Rating rating) {
+        return getLessonByRating(rating.getId());
     }
 
     @Override
-    public Group getGroup(Integer lessonId) {
-        Group group = null;
+    public Lesson getLessonByRating(Integer ratingId) {
+        Lesson lesson = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description " +
-                            "FROM timesheet.lessons AS l " +
-                            "LEFT JOIN timesheet.groups AS g ON l.groupid = g.groupid" +
-                            "WHERE l.lessonid=?");
-            statement.setInt(1, lessonId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                group = new Group(
-                        resultSet.getInt("groupid"),
-                        resultSet.getString("groupname"),
-                        resultSet.getInt("courseid"),
-                        resultSet.getString("startdate"),
-                        resultSet.getString("expdate"),
-                        resultSet.getString("description")
-                );
-            }
+                    "SELECT l.lessonid, l.groupid, l.description, l.date " +
+                            "FROM timesheet.rating AS r " +
+                            "LEFT JOIN timesheet.lessons AS l ON r.lessonid=l.lessonid" +
+                            "WHERE r.id=?");
+            statement.setInt(1, ratingId);
+            lesson = executor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return group;
+        return lesson;
     }
 
     @Override
-    public List<Rating> getRatings(Lesson lesson) {
-        return getRatings(lesson.getId());
+    public List<Lesson> getLessonsByGroup(Group group) {
+        return getLessonsByGroup(group.getId());
     }
 
     @Override
-    public List<Rating> getRatings(Integer lessonId) {
-        List<Rating> ratings = new ArrayList<>();
+    public List<Lesson> getLessonsByGroup(Integer groupId) {
+        List<Lesson> lessons = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM timesheet.rating WHERE lessonid=?");
-            statement.setInt(1, lessonId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                ratings.add(new Rating(
-                        resultSet.getInt("id"),
-                        resultSet.getInt("userId"),
-                        resultSet.getInt("lessonid"),
-                        resultSet.getInt("value"),
-                        resultSet.getString("description")
-                ));
-            }
+                    "SELECT * FROM timesheet.lessons WHERE groupid=?");
+            statement.setInt(1, groupId);
+            lessons = multiExecutor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return ratings;
+        return lessons;
     }
+
 }

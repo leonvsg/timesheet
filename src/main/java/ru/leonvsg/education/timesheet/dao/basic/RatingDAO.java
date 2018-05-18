@@ -1,13 +1,19 @@
 package ru.leonvsg.education.timesheet.dao.basic;
 
 import ru.leonvsg.education.timesheet.entities.*;
+import java.util.List;
 
 public interface RatingDAO extends DAO<Rating, Integer> {
-    User getUser(Rating rating);
 
-    User getUser(Integer ratingId);
+    List<Rating> getRatingByUser(User user);
 
-    Lesson getLesson(Rating rating);
+    List<Rating> getRatingByUser(Integer userId);
 
-    Lesson getLesson(Integer ratingId);
+    List<Rating> getRatingByLesson(Lesson lesson);
+
+    List<Rating> getRatingByLesson(Integer lessonId);
+
+    List<Rating> getRatingByGroup(Group group);
+
+    List<Rating> getRatingByGroup(Integer groupId);
 }

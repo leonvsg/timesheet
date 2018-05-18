@@ -1,7 +1,11 @@
 package ru.leonvsg.education.timesheet.dao.basic;
 
 import ru.leonvsg.education.timesheet.entities.*;
+import java.util.List;
 
 public interface SessionDAO extends DAO<Session, String> {
-    User getUser(String token);
+
+    List<Session> getSessionsByUser(User user);
+
+    List<Session> getSessionsByUser(Integer userId);
 }

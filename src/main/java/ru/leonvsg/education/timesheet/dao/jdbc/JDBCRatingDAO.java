@@ -32,7 +32,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             statement.setInt(3, rating.getValue());
             statement.setString(4, rating.getDescription());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -53,7 +53,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -72,7 +72,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             statement.setString(4, rating.getDescription());
             statement.setInt(5, rating.getId());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -87,7 +87,7 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -113,66 +113,64 @@ public class JDBCRatingDAO extends JDBCDAO<Rating, Integer> implements RatingDAO
     }
 
     @Override
-    public User getUser(Rating rating) {
-        return getUser(rating.getId());
+    public List<Rating> getRatingByUser(User user) {
+        return getRatingByUser(user.getId());
     }
 
     @Override
-    public User getUser(Integer ratingId) {
-        User user = null;
+    public List<Rating> getRatingByUser(Integer userId) {
+        List<Rating> ratings = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
-                            "FROM timesheet.rating AS r " +
-                            "LEFT JOIN timesheet.users AS u ON r.userid = u.userid" +
-                            "WHERE r.id=?");
-            statement.setInt(1, ratingId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        resultSet.getInt("userid"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("regdate"),
-                        resultSet.getString("role"),
-                        resultSet.getString("name"),
-                        resultSet.getString("middlename"),
-                        resultSet.getString("surname")
-                );
-            }
+                    "SELECT * FROM timesheet.rating WHERE userid=?");
+            statement.setInt(1, userId);
+            ratings = multiExecutor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return user;
+        return ratings;
     }
 
     @Override
-    public Lesson getLesson(Rating rating) {
-        return getLesson(rating.getId());
+    public List<Rating> getRatingByLesson(Lesson lesson) {
+        return getRatingByLesson(lesson.getId());
     }
 
     @Override
-    public Lesson getLesson(Integer ratingId) {
-        Lesson lesson = null;
+    public List<Rating> getRatingByLesson(Integer lessonId) {
+        List<Rating> ratings = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT l.lessonid, l.groupid, l.description, l.date " +
-                            "FROM timesheet.rating AS r " +
-                            "LEFT JOIN timesheet.lessons AS l ON r.lessonid=l.lessonid" +
-                            "WHERE r.id=?");
-            statement.setInt(1, ratingId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                lesson = new Lesson(
-                        resultSet.getInt("lessonid"),
-                        resultSet.getInt("groupid"),
-                        resultSet.getString("description"),
-                        resultSet.getString("date")
-                );
-            }
+                    "SELECT * FROM timesheet.rating WHERE lessonid=?");
+            statement.setInt(1, lessonId);
+           ratings = multiExecutor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return lesson;
+        return ratings;
     }
+
+    @Override
+    public List<Rating> getRatingByGroup(Group group) {
+        return getRatingByGroup(group.getId());
+    }
+
+    @Override
+    public List<Rating> getRatingByGroup(Integer groupId) {
+        List<Rating> ratings = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT r.id, r.userid, r.lessonid, r.value, r.description " +
+                            "FROM timesheet.rating AS r " +
+                            "  LEFT JOIN timesheet.lessons AS l ON r.lessonid = l.lessonid " +
+                            "WHERE l.groupid=?"
+            );
+            statement.setInt(1,groupId);
+            ratings = multiExecutor(statement);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return ratings;
+    }
+
 }

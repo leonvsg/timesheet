@@ -1,6 +1,6 @@
 package ru.leonvsg.education.timesheet.entities;
 
-public class Session {
+public class Session implements Entity {
 
     private Integer userId;
     private User user;

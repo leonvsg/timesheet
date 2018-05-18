@@ -1,16 +1,15 @@
 package ru.leonvsg.education.timesheet.dao.basic;
 
-
 import ru.leonvsg.education.timesheet.entities.*;
 import java.util.List;
 
 public interface LessonDAO extends DAO<Lesson, Integer> {
 
-    Group getGroup(Lesson lesson);
+    Lesson getLessonByRating(Rating rating);
 
-    Group getGroup(Integer lessonId);
+    Lesson getLessonByRating(Integer ratingId);
 
-    List<Rating> getRatings(Lesson lesson);
+    List<Lesson> getLessonsByGroup(Group group);
 
-    List<Rating> getRatings(Integer lessonId);
+    List<Lesson> getLessonsByGroup(Integer groupId);
 }

@@ -14,7 +14,6 @@ public class CourseService {
 
     private static final Logger LOGGER = Logger.getLogger(CourseService.class);
     private CourseDAO courseDAO;
-    private UserDAO userDAO;
 
     public CourseService() {
         this(JDBCDAOFactory.getDAOFactory());
@@ -22,7 +21,6 @@ public class CourseService {
 
     public CourseService(DAOFactory daoFactory) {
         courseDAO = daoFactory.getDAO(Course.class);
-        userDAO = daoFactory.getDAO(User.class);
     }
 
     public boolean addCourse(String name, String description, Integer duration){
@@ -38,6 +36,6 @@ public class CourseService {
     }
 
     public List<Course> getCoursesByUser(User user){
-        return userDAO.getCourses(user);
+        return courseDAO.getCoursesByUser(user);
     }
 }

@@ -1,6 +1,6 @@
 package ru.leonvsg.education.timesheet.entities;
 
-public class Rating {
+public class Rating implements Entity {
 
     private Integer id;
     private Integer userId;

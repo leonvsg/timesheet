@@ -1,6 +1,5 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
-
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
@@ -31,7 +30,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             statement.setInt(1, session.getUserId());
             statement.setString(2, session.getToken());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -52,7 +51,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
                 statement.setString(1, s);
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -68,7 +67,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             statement.setInt(1, session.getUserId());
             statement.setString(2, session.getToken());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -83,7 +82,7 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
             );
             statement.setString(1, s);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -106,31 +105,22 @@ public class JDBCSessionDAO extends JDBCDAO<Session, String> implements SessionD
     }
 
     @Override
-    public User getUser(String token) {
-        User user = null;
+    public List<Session> getSessionsByUser(User user) {
+        return getSessionsByUser(user.getId());
+    }
+
+    @Override
+    public List<Session> getSessionsByUser(Integer userId) {
+        List<Session> sessions = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
-                            "FROM timesheet.sessions AS s " +
-                            "LEFT JOIN timesheet.users AS u ON s.userid = u.userid " +
-                            "WHERE s.token=?");
-            statement.setString(1, token);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        resultSet.getInt("userid"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("regdate"),
-                        resultSet.getString("role"),
-                        resultSet.getString("name"),
-                        resultSet.getString("middlename"),
-                        resultSet.getString("surname")
-                );
-            }
+                    "SELECT token FROM timesheet.sessions WHERE userid=?");
+            statement.setInt(1, userId);
+            sessions = multiExecutor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return user;
+        return sessions;
     }
+
 }

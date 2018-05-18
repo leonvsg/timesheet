@@ -1,8 +1,8 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
-
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
+import ru.leonvsg.education.timesheet.dao.basic.EntityPersistanceException;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.entities.*;
 import java.sql.Connection;
@@ -35,7 +35,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             statement.setString(6, user.getMiddleName());
             statement.setString(7, user.getSurname());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -56,7 +56,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -77,7 +77,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             statement.setString(6, user.getSurname());
             statement.setInt(7, user.getId());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -92,7 +92,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -121,146 +121,77 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
     }
 
     @Override
-    public User read(String login) {
+    public User getUserByLogin(String login) {
         User user = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM timesheet.users WHERE login=?");
             statement.setString(1, login);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        resultSet.getInt("userid"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("regdate"),
-                        resultSet.getString("role"),
-                        resultSet.getString("name"),
-                        resultSet.getString("middlename"),
-                        resultSet.getString("surname")
-                );
-            }
+            user = executor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
         return user;
     }
 
     @Override
-    public List<Rating> getRating(User user) {
-        return getRating(user.getId());
-    }
-
-    @Override
-    public List<Rating> getRating(Integer userId) {
-        List<Rating> ratings = new ArrayList<>();
+    public User getUserByToken(String token) {
+        User user = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM timesheet.rating WHERE userid=?");
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                ratings.add(new Rating(
-                        resultSet.getInt("id"),
-                        resultSet.getInt("userId"),
-                        resultSet.getInt("lessonid"),
-                        resultSet.getInt("value"),
-                        resultSet.getString("description")
-                ));
-            }
+                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
+                            "FROM timesheet.sessions AS s " +
+                            "LEFT JOIN timesheet.users AS u ON s.userid = u.userid " +
+                            "WHERE s.token=?");
+            statement.setString(1, token);
+            user = executor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return ratings;
+        return user;
     }
 
     @Override
-    public List<Group> getGroups(User user) {
-        return getGroups(user.getId());
+    public User getUserByRating(Rating rating) {
+        return getUserByRating(rating.getId());
     }
 
     @Override
-    public List<Group> getGroups(Integer userId) {
-        List<Group> groups = new ArrayList<>();
+    public User getUserByRating(Integer ratingId) {
+        User user = null;
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description " +
+                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
+                            "FROM timesheet.rating AS r " +
+                            "LEFT JOIN timesheet.users AS u ON r.userid = u.userid" +
+                            "WHERE r.id=?");
+            statement.setInt(1, ratingId);
+            user = executor(statement);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return user;
+    }
+
+    @Override
+    public List<User> getUsersByGroup(Group group) {
+        return getUsersByGroup(group.getId());
+    }
+
+    @Override
+    public List<User> getUsersByGroup(Integer groupId) {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
                             "FROM timesheet.members AS m " +
-                            "LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
-                            "WHERE m.userid=?");
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                groups.add(new Group(
-                        resultSet.getInt("groupid"),
-                        resultSet.getString("groupname"),
-                        resultSet.getInt("courseid"),
-                        resultSet.getString("startdate"),
-                        resultSet.getString("expdate"),
-                        resultSet.getString("description")
-                ));
-            }
+                            "LEFT JOIN timesheet.users AS u ON m.userid = u.userid " +
+                            "WHERE m.groupid=?");
+            statement.setInt(1, groupId);
+            users = multiExecutor(statement);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
-        return groups;
-    }
-
-    @Override
-    public List<Session> getSessions(User user) {
-        return getSessions(user.getId());
-    }
-
-    @Override
-    public List<Session> getSessions(Integer userId) {
-        List<Session> sessions = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT token FROM timesheet.sessions WHERE userid=?");
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                sessions.add(new Session(
-                        userId,
-                        resultSet.getString("token")
-                ));
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return sessions;
-    }
-
-    @Override
-    public List<Course> getCourses(User user){
-        return getCourses(user.getId());
-    }
-
-    @Override
-    public List<Course> getCourses(Integer userId){
-        List<Course> courses = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT c.courseid, c.coursename, c.description, c.duration " +
-                            "FROM timesheet.members AS m " +
-                            "  LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
-                            "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid " +
-                            "WHERE m.userid=? GROUP BY c.courseid");
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                courses.add(
-                        new Course(
-                                resultSet.getInt("courseid"),
-                                resultSet.getString("coursename"),
-                                resultSet.getString("description"),
-                                resultSet.getInt("duration")
-                        )
-                );
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return courses;
+        return users;
     }
 }

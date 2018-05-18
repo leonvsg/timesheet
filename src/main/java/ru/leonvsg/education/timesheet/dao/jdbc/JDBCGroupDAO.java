@@ -34,7 +34,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             statement.setString(4, group.getExpDate());
             statement.setString(5, group.getDescription());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -55,7 +55,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                 statement.setInt(1, key);
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -75,7 +75,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             statement.setString(5, group.getDescription());
             statement.setInt(6, group.getId());
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -90,7 +90,7 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             );
             statement.setInt(1, key);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw new SQLException(INVALID_PREPARED_STATEMENT_MESSAGE);
         }
         return statement;
@@ -117,6 +117,70 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
     }
 
     @Override
+    public Group getGroupByLesson(Lesson lesson) {
+        return getGroupByLesson(lesson.getId());
+    }
+
+    @Override
+    public Group getGroupByLesson(Integer lessonId) {
+        Group group = null;
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description " +
+                            "FROM timesheet.lessons AS l " +
+                            "LEFT JOIN timesheet.groups AS g ON l.groupid = g.groupid" +
+                            "WHERE l.lessonid=?");
+            statement.setInt(1, lessonId);
+            group = executor(statement);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return group;
+    }
+
+    @Override
+    public List<Group> getGroupsByCourse(Course course) {
+        return getGroupsByCourse(course.getId());
+    }
+
+    @Override
+    public List<Group> getGroupsByCourse(Integer courseId) {
+        List<Group> groups = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM timesheet.groups WHERE courseid=?");
+            statement.setInt(1, courseId);
+            ResultSet resultSet = statement.executeQuery();
+            groups = multiExecutor(statement);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return groups;
+    }
+
+    @Override
+    public List<Group> getGroupsByUser(User user) {
+        return getGroupsByUser(user.getId());
+    }
+
+    @Override
+    public List<Group> getGroupsByUser(Integer userId) {
+        List<Group> groups = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT g.groupid, g.groupname, g.courseid, g.startdate, g.expdate, g.description " +
+                            "FROM timesheet.members AS m " +
+                            "LEFT JOIN timesheet.groups AS g ON m.groupid = g.groupid " +
+                            "WHERE m.userid=?");
+            statement.setInt(1, userId);
+            groups = multiExecutor(statement);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return groups;
+    }
+
+    @Override
     public List<Group> getGroupsWithCourses() {
         List<Group> groups = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
@@ -128,25 +192,9 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                             "  LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid "
             );
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                groups.add(
-                        new Group(
-                                resultSet.getInt("groupid"),
-                                resultSet.getString("groupname"),
-                                new Course(
-                                        resultSet.getInt("courseid"),
-                                        resultSet.getString("coursename"),
-                                        resultSet.getString("coursedescription"),
-                                        resultSet.getInt("duration")
-                                ),
-                                resultSet.getString("startdate"),
-                                resultSet.getString("expdate"),
-                                resultSet.getString("description")
-                        )
-                );
-            }
+            groups = parseResultSetWithCourses(resultSet);
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
         return groups;
     }
@@ -165,6 +213,16 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
             );
             statement.setInt(1,user.getId());
             ResultSet resultSet = statement.executeQuery();
+            groups = parseResultSetWithCourses(resultSet);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return groups;
+    }
+
+    private List<Group> parseResultSetWithCourses(ResultSet resultSet) throws SQLException {
+        List<Group> groups = new ArrayList<>();
+        try {
             while (resultSet.next()) {
                 groups.add(
                         new Group(
@@ -182,134 +240,9 @@ public class JDBCGroupDAO extends JDBCDAO<Group, Integer> implements GroupDAO {
                         )
                 );
             }
-        } catch (SQLException e) {
-            LOGGER.error(e);
+        } catch (Exception e) {
+            throw new SQLException("Incorrect ResultSet");
         }
         return groups;
-    }
-
-    @Override
-    public List<User> getUsers(Group group) {
-        return getUsers(group.getId());
-    }
-
-    @Override
-    public List<User> getUsers(Integer groupId) {
-        List<User> users = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT u.userid, u.login, u.password, u.regdate, u.role, u.name, u.middlename, u.surname " +
-                            "FROM timesheet.members AS m " +
-                            "LEFT JOIN timesheet.users AS u ON m.userid = u.userid " +
-                            "WHERE m.groupid=?");
-            statement.setInt(1, groupId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                users.add(new User(
-                        resultSet.getInt("userid"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("regdate"),
-                        resultSet.getString("role"),
-                        resultSet.getString("name"),
-                        resultSet.getString("middlename"),
-                        resultSet.getString("surname")
-                ));
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return users;
-    }
-
-    @Override
-    public List<Lesson> getLessons(Group group) {
-        return getLessons(group.getId());
-    }
-
-    @Override
-    public List<Lesson> getLessons(Integer groupId) {
-        List<Lesson> lessons = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM timesheet.lessons WHERE groupid=?");
-            statement.setInt(1, groupId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                lessons.add(new Lesson(
-                        resultSet.getInt("lessonid"),
-                        resultSet.getInt("groupid"),
-                        resultSet.getString("description"),
-                        resultSet.getString("date")
-                ));
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return lessons;
-    }
-
-    @Override
-    public Course getCourse(Group group) {
-        return getCourse(group.getId());
-    }
-
-    @Override
-    public Course getCourse(Integer groupId) {
-        Course course = null;
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT c.courseid, c.coursename, c.description, c.duration " +
-                            "FROM timesheet.groups AS g " +
-                            "LEFT JOIN timesheet.courses AS c ON g.courseid = c.courseid" +
-                            "WHERE g.groupid=?");
-            statement.setInt(1, groupId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                course = new Course(
-                        resultSet.getInt("courseid"),
-                        resultSet.getString("coursename"),
-                        resultSet.getString("description"),
-                        resultSet.getInt("duration")
-                );
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return course;
-    }
-
-    @Override
-    public List<Rating> getRating(Group group) {
-        return getRating(group.getId());
-    }
-
-    @Override
-    public List<Rating> getRating(Integer groupId) {
-        List<Rating> ratings = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT r.id, r.userid, r.lessonid, r.value, r.description " +
-                            "FROM timesheet.rating AS r " +
-                            "  LEFT JOIN timesheet.lessons AS l ON r.lessonid = l.lessonid " +
-                            "WHERE l.groupid=?"
-            );
-            statement.setInt(1,groupId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                ratings.add(
-                        new Rating(
-                                resultSet.getInt("id"),
-                                resultSet.getInt("userid"),
-                                resultSet.getInt("lessonid"),
-                                resultSet.getInt("value"),
-                                resultSet.getString("description")
-                        )
-                );
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        }
-        return ratings;
     }
 }
