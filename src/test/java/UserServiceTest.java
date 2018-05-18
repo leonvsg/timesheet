@@ -22,7 +22,6 @@ public class UserServiceTest {
     private UserService userService;
     private UserDAO userDAO;
     private SessionDAO sessionDAO;
-    private GroupDAO groupDAO;
     private User user;
     private String login = "Login";
     private String freeLogin = "FreeLogin";
@@ -36,16 +35,14 @@ public class UserServiceTest {
         when(user.getRole()).thenReturn("ADMIN");
         when(user.getPassword()).thenReturn(hashedPassword);
         userDAO = mock(JDBCUserDAO.class);
-        when(userDAO.getByLogin(login)).thenReturn(user);
-        when(userDAO.getByLogin(freeLogin)).thenReturn(null);
+        when(userDAO.getUserByLogin(login)).thenReturn(user);
+        when(userDAO.getUserByLogin(freeLogin)).thenReturn(null);
+        when(userDAO.getUserByToken(token)).thenReturn(user);
+        when(userDAO.getUserByToken(null)).thenReturn(null);
         sessionDAO = mock(JDBCSessionDAO.class);
-        when(sessionDAO.getUser(token)).thenReturn(user);
-        when(sessionDAO.getUser(null)).thenReturn(null);
         when(sessionDAO.create(any())).thenReturn(true);
-        groupDAO = mock(JDBCGroupDAO.class);
         DAOFactory daoFactory = mock(JDBCDAOFactory.class);
         when(daoFactory.getDAO(User.class)).thenReturn(userDAO);
-        when(daoFactory.getDAO(Group.class)).thenReturn(groupDAO);
         when(daoFactory.getDAO(Session.class)).thenReturn(sessionDAO);
         userService = new UserService(daoFactory);
     }
@@ -116,7 +113,7 @@ public class UserServiceTest {
     @Test
     public void authenticateTestWithToken(){
         userService.authenticate(token);
-        verify(sessionDAO).getUser(token);
+        verify(userDAO).getUserByToken(token);
     }
 
     @Test
@@ -136,6 +133,6 @@ public class UserServiceTest {
     public void getUsersByGroupTest(){
         Integer groupId = 0;
         userService.getUsersByGroup(groupId);
-        verify(groupDAO).getUsers(groupId);
+        verify(userDAO).getUsersByGroup(groupId);
     }
 }

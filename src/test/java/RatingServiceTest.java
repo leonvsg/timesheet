@@ -2,9 +2,12 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
+import ru.leonvsg.education.timesheet.dao.basic.RatingDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
+import ru.leonvsg.education.timesheet.dao.jdbc.JDBCRatingDAO;
 import ru.leonvsg.education.timesheet.entities.Group;
+import ru.leonvsg.education.timesheet.entities.Rating;
 import ru.leonvsg.education.timesheet.services.RatingService;
 
 import static org.mockito.Mockito.*;
@@ -12,15 +15,15 @@ import static org.mockito.Mockito.*;
 public class RatingServiceTest {
 
     private RatingService ratingService;
-    private GroupDAO groupDAO;
+    private RatingDAO ratingDAO;
     private Group group;
 
     @Before
     public void before(){
         group = mock(Group.class);
-        groupDAO = mock(JDBCGroupDAO.class);
+        ratingDAO = mock(JDBCRatingDAO.class);
         DAOFactory daoFactory = mock(JDBCDAOFactory.class);
-        when(daoFactory.getDAO(Group.class)).thenReturn(groupDAO);
+        when(daoFactory.getDAO(Rating.class)).thenReturn(ratingDAO);
         ratingService = new RatingService(daoFactory);
     }
 
@@ -28,12 +31,12 @@ public class RatingServiceTest {
     public void getRatingsByGroupTestWithGroupId(){
         Integer id = 0;
         ratingService.getRatingsByGroup(id);
-        verify(groupDAO).getRating(id);
+        verify(ratingDAO).getRatingByGroup(id);
     }
 
     @Test
     public void getRatingsByGroupTestWithGroupObject(){
         ratingService.getRatingsByGroup(group);
-        verify(groupDAO).getRating(group);
+        verify(ratingDAO).getRatingByGroup(group);
     }
 }
