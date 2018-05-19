@@ -10,7 +10,7 @@ import ru.leonvsg.education.timesheet.entities.User;
 
 import java.util.List;
 
-public class GroupService {
+public class GroupService implements Service {
 
     private static final Logger LOGGER = Logger.getLogger(GroupService.class);
     private GroupDAO groupDAO;

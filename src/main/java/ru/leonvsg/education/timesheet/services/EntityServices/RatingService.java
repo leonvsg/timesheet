@@ -9,7 +9,7 @@ import ru.leonvsg.education.timesheet.entities.Rating;
 
 import java.util.List;
 
-public class RatingService {
+public class RatingService implements Service {
 
     private static final Logger LOGGER = Logger.getLogger(LessonService.class);
     private RatingDAO ratingDAO;

@@ -6,7 +6,7 @@ import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Session;
 
-public class SessionService {
+public class SessionService implements Service {
 
     private static final Logger LOGGER = Logger.getLogger(SessionService.class);
     private SessionDAO sessionDAO;

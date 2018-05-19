@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserService {
+public class UserService implements Service {
 
     private static final Logger LOGGER = Logger.getLogger(LessonService.class);
     private UserDAO userDAO;

@@ -3,18 +3,29 @@ package ru.leonvsg.education.timesheet.services.context;
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.*;
 import ru.leonvsg.education.timesheet.services.EntityServices.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContextDirector {
 
     private static final Logger LOGGER = Logger.getLogger(ContextDirector.class);
-    private final GroupService groupService = new GroupService();
-    private final UserService userService = new UserService();
-    private final LessonService lessonService = new LessonService();
-    private final RatingService ratingService = new RatingService();
-    private final CourseService courseService = new CourseService();
+    private final GroupService groupService;
+    private final UserService userService;
+    private final LessonService lessonService;
+    private final RatingService ratingService;
+    private final CourseService courseService;
+
+    public ContextDirector() {
+        this(EntityServiceFactory.getInstance());
+    }
+
+    public ContextDirector(ServiceFactory serviceFactory) {
+        groupService = serviceFactory.getService(Group.class);
+        userService = serviceFactory.getService(User.class);
+        lessonService = serviceFactory.getService(Lesson.class);
+        ratingService = serviceFactory.getService(Rating.class);
+        courseService = serviceFactory.getService(Course.class);
+    }
 
     public ViewContext getRatingViewContext(User user, Integer id){
         List<Lesson> lessons = new ArrayList<>();

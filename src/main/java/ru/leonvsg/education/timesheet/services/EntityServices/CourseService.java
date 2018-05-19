@@ -9,7 +9,7 @@ import ru.leonvsg.education.timesheet.entities.User;
 
 import java.util.List;
 
-public class CourseService {
+public class CourseService implements Service {
 
     private static final Logger LOGGER = Logger.getLogger(CourseService.class);
     private CourseDAO courseDAO;
