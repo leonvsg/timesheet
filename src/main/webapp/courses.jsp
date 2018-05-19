@@ -22,7 +22,7 @@
                     <div class="panel-heading">Courses</div>
                     <!-- Таблица -->
                     <c:choose>
-                        <c:when test="${user.getRole().toUpperCase().equals(\"ADMIN\")}">
+                        <c:when test="${context.getUser().getRole().toUpperCase().equals(\"ADMIN\")}">
                             <div class="alert alert-info error-message" role="alert">
                                 <c:out value="${param.errorMessage}" default="Add new course"/>
                             </div>
@@ -66,7 +66,7 @@
                             <td>Description</td>
                             <td>Duration</td>
                         </tr>
-                        <c:forEach items="${courses}" var="course">
+                        <c:forEach items="${context.getCourses()}" var="course">
                             <tr>
                                 <td><c:out value="${course.getId()}"/></td>
                                 <td>

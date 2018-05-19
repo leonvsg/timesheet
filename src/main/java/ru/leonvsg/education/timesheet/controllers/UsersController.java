@@ -2,7 +2,7 @@ package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.Role;
-import ru.leonvsg.education.timesheet.services.UserService;
+import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -14,7 +14,7 @@ public class Utils {
         if (request == null) return "{}";
         StringBuilder params = new StringBuilder("{ ");
         request.getParameterMap().forEach((key, values)->{
-            for (String value: values) params.append(key + "=" + value + ", ");
+            for (String value: values) params.append(key).append("=").append(value).append(", ");
         });
         params.append("}");
         return params.toString();

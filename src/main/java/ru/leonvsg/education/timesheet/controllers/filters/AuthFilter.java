@@ -1,7 +1,7 @@
 package ru.leonvsg.education.timesheet.controllers.filters;
 
 import org.apache.log4j.Logger;
-import ru.leonvsg.education.timesheet.services.UserService;
+import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +25,8 @@ public class AuthFilter implements Filter {
         LOGGER.info("Enter to " + ((HttpServletRequest) request).getRequestURI());
         Object token = session.getAttribute("token");
         if (token != null && userService.authenticate(token.toString()) != null) {
-            chain.doFilter(request, response);
             LOGGER.info("Token is valid. Access confirmed.");
+            chain.doFilter(request, response);
         } else {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;

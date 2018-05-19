@@ -19,15 +19,15 @@
             <main class="content">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><c:out value="${course.getName()}"/></h3>
+                        <h3 class="panel-title"><c:out value="${context.getCourse().getName()}"/></h3>
                     </div>
                     <table class="table">
                         <tr>
-                            <td><strong>Id: </strong><c:out value="${course.getId()}"/></td>
-                            <td><strong>Duration: </strong><c:out value="${course.getDuration()}"/></td>
+                            <td><strong>Id: </strong><c:out value="${context.getCourse().getId()}"/></td>
+                            <td><strong>Duration: </strong><c:out value="${context.getCourse().getDuration()}"/></td>
                         </tr>
                     </table>
-                    <div class="panel-footer"><c:out value="${course.getDescription()}"/></div>
+                    <div class="panel-footer"><c:out value="${context.getCourse().getDescription()}"/></div>
                 </div>
                 <div class="panel panel-info">
                     <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="true" aria-controls="collapseGroups">
@@ -43,7 +43,7 @@
                                 <td>Start Date</td>
                                 <td>Expiration Date</td>
                             </tr>
-                            <c:forEach items="${groups}" var="group">
+                            <c:forEach items="${context.getGroups()}" var="group">
                                 <tr>
                                     <td><c:out value="${group.getId()}"/></td>
                                     <td>
