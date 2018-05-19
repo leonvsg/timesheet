@@ -5,7 +5,7 @@ import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCSessionDAO;
 import ru.leonvsg.education.timesheet.entities.Session;
-import ru.leonvsg.education.timesheet.services.SessionService;
+import ru.leonvsg.education.timesheet.services.EntityServices.SessionService;
 
 import static org.mockito.Mockito.*;
 

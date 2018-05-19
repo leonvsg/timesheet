@@ -1,14 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
-import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
 import ru.leonvsg.education.timesheet.dao.basic.RatingDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
-import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCRatingDAO;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Rating;
-import ru.leonvsg.education.timesheet.services.RatingService;
+import ru.leonvsg.education.timesheet.services.EntityServices.RatingService;
 
 import static org.mockito.Mockito.*;
 

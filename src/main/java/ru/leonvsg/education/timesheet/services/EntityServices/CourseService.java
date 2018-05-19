@@ -1,9 +1,8 @@
-package ru.leonvsg.education.timesheet.services;
+package ru.leonvsg.education.timesheet.services.EntityServices;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.dao.basic.CourseDAO;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
-import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.User;

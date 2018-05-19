@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet.services;
+package ru.leonvsg.education.timesheet.services.EntityServices;
 
 import com.google.common.hash.Hashing;
 import org.apache.log4j.Logger;
@@ -7,7 +7,6 @@ import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.basic.UserDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
-import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;

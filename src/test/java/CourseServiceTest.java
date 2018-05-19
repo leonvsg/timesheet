@@ -6,7 +6,7 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCCourseDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.CourseService;
+import ru.leonvsg.education.timesheet.services.EntityServices.CourseService;
 
 import static org.mockito.Mockito.*;
 
