@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet.services.EntityServices;
+package ru.leonvsg.education.timesheet.services.entity;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.dao.basic.CourseDAO;

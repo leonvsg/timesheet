@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet.services.EntityServices;
+package ru.leonvsg.education.timesheet.services.entity;
 
 import com.google.common.hash.Hashing;
 import org.apache.log4j.Logger;

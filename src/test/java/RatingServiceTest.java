@@ -6,7 +6,7 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCRatingDAO;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Rating;
-import ru.leonvsg.education.timesheet.services.EntityServices.RatingService;
+import ru.leonvsg.education.timesheet.services.entity.RatingService;
 
 import static org.mockito.Mockito.*;
 

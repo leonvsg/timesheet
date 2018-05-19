@@ -2,7 +2,7 @@ package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
+import ru.leonvsg.education.timesheet.services.entity.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
 import ru.leonvsg.education.timesheet.services.context.ContextDirector;
 import ru.leonvsg.education.timesheet.services.context.ViewContext;

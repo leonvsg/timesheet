@@ -2,7 +2,7 @@ package ru.leonvsg.education.timesheet.services.context;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.*;
-import ru.leonvsg.education.timesheet.services.EntityServices.*;
+import ru.leonvsg.education.timesheet.services.entity.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,8 +2,8 @@ package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.EntityServices.SessionService;
-import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
+import ru.leonvsg.education.timesheet.services.entity.SessionService;
+import ru.leonvsg.education.timesheet.services.entity.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
 
 import javax.servlet.ServletException;

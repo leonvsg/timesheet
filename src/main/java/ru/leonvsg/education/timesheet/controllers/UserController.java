@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.EntityServices.GroupService;
-import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
+import ru.leonvsg.education.timesheet.services.entity.GroupService;
+import ru.leonvsg.education.timesheet.services.entity.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
 
 import javax.servlet.ServletException;

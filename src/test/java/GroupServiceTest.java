@@ -7,7 +7,7 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCGroupDAO;
 import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.EntityServices.GroupService;
+import ru.leonvsg.education.timesheet.services.entity.GroupService;
 
 import static org.mockito.Mockito.*;
 

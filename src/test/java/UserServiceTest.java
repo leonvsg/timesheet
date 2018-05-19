@@ -9,7 +9,7 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCUserDAO;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
-import ru.leonvsg.education.timesheet.services.EntityServices.UserService;
+import ru.leonvsg.education.timesheet.services.entity.UserService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
