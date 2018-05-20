@@ -15,6 +15,4 @@
     <meta name="description" content="" />
     <link href="<c:url value="/static/css/bootstrap.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/static/css/style.css"/>" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="<c:url value="/static/js/bootstrap.min.js"/>"></script>
 </head>

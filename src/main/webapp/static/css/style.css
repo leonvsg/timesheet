@@ -111,10 +111,32 @@
 	cursor: pointer;
 }
 
+.rating-select-addon{
+	width: 1%!important;
+}
+
+.rating-input-group{
+	width: 100%;
+}
+
 .lessons-title {
 	display: inline-block;
 	width: 70%;
 	text-align: center;
+	vertical-align: middle;
+}
+
+.panel-heading-cst{
+	padding: 5px 10px;
+}
+
+.lessons-title-cst{
+	margin: 0px;
+}
+
+.table>tbody>tr>.td-rating-cst{
+	text-align: center;
+	vertical-align: middle;
 }
 
 /* Left Sidebar

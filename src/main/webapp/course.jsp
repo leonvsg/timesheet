@@ -68,6 +68,7 @@
         </div><!-- .container-->
     </div><!-- .middle-->
 </div><!-- .wrapper -->
+<c:import url="/footer.jsp"/>
 <!-- .footer -->
 </body>
 </html>
