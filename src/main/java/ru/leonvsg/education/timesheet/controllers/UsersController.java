@@ -2,6 +2,11 @@ package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.entities.Role;
+import ru.leonvsg.education.timesheet.entities.User;
+import ru.leonvsg.education.timesheet.services.ServiceFactory;
+import ru.leonvsg.education.timesheet.services.context.ViewContext;
+import ru.leonvsg.education.timesheet.services.context.ViewContextService;
+import ru.leonvsg.education.timesheet.services.entity.EntityServiceFactory;
 import ru.leonvsg.education.timesheet.services.entity.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
 import javax.servlet.ServletException;
@@ -13,18 +18,34 @@ import java.io.IOException;
 public class UsersController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(UsersController.class);
-    private final UserService userService = new UserService();
+    private final UserService userService;
+    private final ViewContextService viewContextService;
+
+    public UsersController() {
+        super();
+        ServiceFactory serviceFactory = EntityServiceFactory.getInstance();
+        userService = serviceFactory.getService(User.class);
+        viewContextService = new ViewContextService();
+    }
+
+    public UsersController(ServiceFactory serviceFactory, ViewContextService contextService) {
+        super();
+        userService = serviceFactory.getService(User.class);
+        viewContextService = contextService;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         LOGGER.info("Received GET request with params: " + Utils.requestParamsToString(req));
         String token = req.getSession().getAttribute("token").toString();
-        if (userService.verifyRole(token) == Role.ADMIN){
-            req.setAttribute("users", userService.getAllUsers());
+        ViewContext context = viewContextService.getUsersViewContext(token);
+        if (context.getErrorMessage() == null || context.getErrorMessage().isEmpty()){
+            req.setAttribute("context", context);
             req.getRequestDispatcher("/users.jsp").forward(req, resp);
             LOGGER.info("User is ADMIN. Show users list");
         } else {
+            LOGGER.warn(context.getErrorMessage());
             resp.sendRedirect(req.getContextPath() + "user?id=" + userService.authenticate(token).getId());
             LOGGER.info("User is not ADMIN. Send redirect to 'MyPage': " + req.getContextPath() + "user?id=" + userService.authenticate(token).getId());
         }
@@ -34,52 +55,18 @@ public class UsersController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         LOGGER.info("Received POST request with params: " + Utils.requestParamsToString(req));
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        String role = req.getParameter("role");
-        String name = req.getParameter("name");
-        String middlename = req.getParameter("middlename");
-        String surname = req.getParameter("surname");
-        String token = req.getSession().getAttribute("token").toString();
-        if (userService.verifyRole(token) != Role.ADMIN){
-            resp.sendRedirect(req.getContextPath() + "users");
-            LOGGER.warn("Can't to create user. Need ADMIN role.");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users");
-            return;
-        }
-        if (!userService.isValidPassword(password)){
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=InvalidPassword");
-            LOGGER.warn("Can't to create user. Invalid password");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=InvalidPassword");
-            return;
-        }
-        if (!userService.isValidRole(role)){
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=InvalidRole");
-            LOGGER.warn("Can't to create user. Invalid role");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=InvalidRole");
-            return;
-        }
-        if (!userService.isValidLogin(login)){
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=InvalidLogin");
-            LOGGER.warn("Can't to create user. Invalid login");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=InvalidLogin");
-            return;
-        }
-        if (userService.isBusyLogin(login)){
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=LoginIsBusy");
-            LOGGER.warn("Can't to create user. Login is busy");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=LoginIsBusy");
-            return;
-        }
-        if (userService.register(login, password, role, name, middlename, surname)){
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=Success");
-            LOGGER.info("User created");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=Success");
-        }
-        else {
-            resp.sendRedirect(req.getContextPath() + "users?errorMessage=WTF???");
-            LOGGER.warn("Something went wrong!");
-            LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=WTF???");
-        }
+        ViewContext context = viewContextService.postUsersViewContext(
+                req.getParameter("login"),
+                req.getParameter("password"),
+                req.getParameter("role"),
+                req.getParameter("name"),
+                req.getParameter("middlename"),
+                req.getParameter("surname"),
+                req.getSession().getAttribute("token").toString()
+        );
+        String errorMessage = context.getErrorMessage();
+        LOGGER.warn("Create user result: " + errorMessage);
+        resp.sendRedirect(req.getContextPath() + "users?errorMessage=" + errorMessage);
+        LOGGER.info("Send redirect to " + req.getContextPath() + "users?errorMessage=" + errorMessage);
     }
 }

@@ -73,7 +73,7 @@ public class ViewContextBuilder implements ContextBuilder {
     }
 
     @Override
-    public ViewContext gotResult(){
+    public ViewContext getResult(){
         return new ViewContext(errorMessage, user, rating, lesson, group, course, users, ratings, lessons, groups, courses);
     }
 }

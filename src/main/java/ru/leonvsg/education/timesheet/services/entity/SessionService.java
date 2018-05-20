@@ -5,6 +5,7 @@ import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.basic.SessionDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Session;
+import ru.leonvsg.education.timesheet.services.Service;
 
 public class SessionService implements Service {
 

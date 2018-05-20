@@ -19,4 +19,32 @@ public class Utils {
         params.append("}");
         return params.toString();
     }
+
+    public static boolean isEmptyParams(String ... params){
+        for (String param: params)
+            if (!param.isEmpty())
+                return false;
+        return true;
+    }
+
+    public static boolean isNullParams(String ... params){
+        for (String param: params)
+            if (param != null)
+                return false;
+        return true;
+    }
+
+    public static boolean isNotEmptyParams(String ... params){
+        for (String param: params)
+            if (param.isEmpty())
+                return false;
+        return true;
+    }
+
+    public static boolean isNotNullParams(String ... params){
+        for (String param: params)
+            if (param == null)
+                return false;
+        return true;
+    }
 }

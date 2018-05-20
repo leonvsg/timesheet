@@ -1,11 +1,13 @@
 package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
+import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
+import ru.leonvsg.education.timesheet.services.ServiceFactory;
+import ru.leonvsg.education.timesheet.services.entity.EntityServiceFactory;
 import ru.leonvsg.education.timesheet.services.entity.SessionService;
 import ru.leonvsg.education.timesheet.services.entity.UserService;
 import ru.leonvsg.education.timesheet.services.Utils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +17,21 @@ import java.io.IOException;
 public class AuthController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(AuthController.class);
-    private final UserService userService = new UserService();
-    private final SessionService sessionService = new SessionService();
+    private final UserService userService;
+    private final SessionService sessionService;
+
+    public AuthController() {
+        super();
+        userService = EntityServiceFactory.getInstance().getService(User.class);
+        sessionService = EntityServiceFactory.getInstance().getService(Session.class);
+
+    }
+
+    public AuthController(ServiceFactory serviceFactory) {
+        super();
+        userService = serviceFactory.getService(User.class);
+        sessionService = serviceFactory.getService(Session.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

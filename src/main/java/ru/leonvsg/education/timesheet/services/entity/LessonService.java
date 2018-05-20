@@ -6,6 +6,7 @@ import ru.leonvsg.education.timesheet.dao.basic.LessonDAO;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Lesson;
+import ru.leonvsg.education.timesheet.services.Service;
 
 import java.util.List;
 

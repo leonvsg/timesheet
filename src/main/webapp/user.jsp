@@ -28,11 +28,11 @@
                     </c:if>
                     <div class="collapse in" id="collapseUserInfo">
                     <form class="auth-form" role="form" class="form-inline" action="${pageContext.request.contextPath}user" method="post">
-                        <input name="id" value="<c:out value="${user.getId()}"/>" hidden/>
+                        <input name="id" value="<c:out value="${context.getUser().getId()}"/>" hidden/>
                         <table class="table">
                             <tr>
                                 <td>Id</td>
-                                <td><c:out value="${user.getId()}"/></td>
+                                <td><c:out value="${context.getUser().getId()}"/></td>
                                 <td>
                                     <div class="form-group">
                                         <input type="password" class="form-control" id="password" name="password" placeholder="New password">
@@ -41,7 +41,7 @@
                             </tr>
                             <tr>
                                 <td>Name</td>
-                                <td><c:out value="${user.getName()}"/></td>
+                                <td><c:out value="${context.getUser().getName()}"/></td>
                                 <td>
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="name" name="name" placeholder="New name">
@@ -50,28 +50,28 @@
                             </tr>
                             <tr>
                                 <td>Middlename</td>
-                                <td><c:out value="${user.getMiddleName()}"/></td>
+                                <td><c:out value="${context.getUser().getMiddleName()}"/></td>
                                 <td>
                                     <input type="text" class="form-control" id="middlename" name="middlename" placeholder="New middlename">
                                 </td>
                             </tr>
                             <tr>
                                 <td>Surname</td>
-                                <td><c:out value="${user.getSurname()}"/></td>
+                                <td><c:out value="${context.getUser().getSurname()}"/></td>
                                 <td>
                                     <input type="text" class="form-control" id="surname" name="surname" placeholder="New surname">
                                 </td>
                             </tr>
                             <tr>
                                 <td>Email</td>
-                                <td><c:out value="${user.getLogin()}"/></td>
+                                <td><c:out value="${context.getUser().getLogin()}"/></td>
                                 <td>
                                     <input type="email" class="form-control" name="login" id="email" placeholder="New email">
                                 </td>
                             </tr>
                             <tr>
                                 <td>Role</td>
-                                <td><c:out value="${user.getRole()}"/></td>
+                                <td><c:out value="${context.getUser().getRole()}"/></td>
                                 <td>
                                     <button type="submit" class="btn btn-default btn-entr">Submit new options</button>
                                 </td>
@@ -94,7 +94,7 @@
                             <td>Start Date</td>
                             <td>Expiration Date</td>
                         </tr>
-                        <c:forEach items="${groups}" var="group">
+                        <c:forEach items="${context.getGroups()}" var="group">
                             <tr>
                                 <td><c:out value="${group.getId()}"/></td>
                                 <td>

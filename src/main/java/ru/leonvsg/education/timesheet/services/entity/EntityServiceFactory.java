@@ -4,10 +4,13 @@ import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.dao.basic.DAOFactory;
 import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.*;
+import ru.leonvsg.education.timesheet.services.Service;
+import ru.leonvsg.education.timesheet.services.ServiceFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class EntityServiceFactory implements ServiceFactory{
+public class EntityServiceFactory implements ServiceFactory {
 
     private static final Logger LOGGER = Logger.getLogger(EntityServiceFactory.class);
     private static ServiceFactory serviceFactory;

@@ -16,5 +16,5 @@ public interface ContextBuilder {
     void setLessons(List<Lesson> lessons);
     void setGroups(List<Group> groups);
     void setCourses(List<Course> courses);
-    ViewContext gotResult();
+    ViewContext getResult();
 }

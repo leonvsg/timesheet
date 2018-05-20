@@ -72,7 +72,7 @@
                             <td colspan="3">Email</td>
                             <td colspan="3">Role</td>
                         </tr>
-                        <c:forEach items="${users}" var="user">
+                        <c:forEach items="${context.getUsers()}" var="user">
                             <tr>
                                 <td><c:out value="${user.getId()}"/></td>
                                 <td colspan="3">

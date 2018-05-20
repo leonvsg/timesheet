@@ -1,4 +1,4 @@
-package ru.leonvsg.education.timesheet.services.entity;
+package ru.leonvsg.education.timesheet.services;
 
 public interface ServiceFactory {
 

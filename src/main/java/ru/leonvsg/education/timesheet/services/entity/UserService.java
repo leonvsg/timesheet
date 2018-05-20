@@ -10,6 +10,8 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Role;
 import ru.leonvsg.education.timesheet.entities.Session;
 import ru.leonvsg.education.timesheet.entities.User;
+import ru.leonvsg.education.timesheet.services.Service;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
