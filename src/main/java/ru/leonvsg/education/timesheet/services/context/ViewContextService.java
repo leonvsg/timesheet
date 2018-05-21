@@ -5,7 +5,6 @@ import ru.leonvsg.education.timesheet.entities.*;
 import ru.leonvsg.education.timesheet.services.ServiceFactory;
 import ru.leonvsg.education.timesheet.services.Utils;
 import ru.leonvsg.education.timesheet.services.entity.*;
-import ru.leonvsg.education.timesheet.services.verification.Checker;
 import ru.leonvsg.education.timesheet.services.verification.Handler;
 
 import java.util.ArrayList;
@@ -272,6 +271,13 @@ public class ViewContextService {
         if (handler.verify()){
             builder.setErrorMessage("Success");
         }
+        return builder.getResult();
+    }
+
+    public ViewContext postRatingViewContext(String studentId, String lessonId, String rateValue,
+                                             String rateDescription, String groupId, String token) {
+        ContextBuilder builder = new ViewContextBuilder();
+        //TODO: POST rating logic
         return builder.getResult();
     }
 }

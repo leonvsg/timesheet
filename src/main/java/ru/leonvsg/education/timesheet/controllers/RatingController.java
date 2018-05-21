@@ -1,12 +1,15 @@
 package ru.leonvsg.education.timesheet.controllers;
 
 import org.apache.log4j.Logger;
-import ru.leonvsg.education.timesheet.entities.*;
-import ru.leonvsg.education.timesheet.services.*;
+import ru.leonvsg.education.timesheet.entities.Role;
+import ru.leonvsg.education.timesheet.entities.User;
+import ru.leonvsg.education.timesheet.services.ServiceFactory;
+import ru.leonvsg.education.timesheet.services.Utils;
+import ru.leonvsg.education.timesheet.services.context.ViewContext;
+import ru.leonvsg.education.timesheet.services.context.ViewContextService;
 import ru.leonvsg.education.timesheet.services.entity.EntityServiceFactory;
 import ru.leonvsg.education.timesheet.services.entity.UserService;
-import ru.leonvsg.education.timesheet.services.context.ViewContextService;
-import ru.leonvsg.education.timesheet.services.context.ViewContext;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,5 +50,23 @@ public class RatingController extends HttpServlet {
         req.setAttribute("context", viewContext);
         req.getRequestDispatcher("/rating.jsp").forward(req, resp);
         LOGGER.info("Show rating for group with id=" + id);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        LOGGER.info("Received POST request with params: " + Utils.requestParamsToString(req));
+        String groupId = req.getParameter("group");
+        ViewContext context = viewContextService.postRatingViewContext(
+                req.getParameter("student"),
+                req.getParameter("lesson"),
+                req.getParameter("value"),
+                req.getParameter("description"),
+                groupId,
+                req.getSession().getAttribute("token").toString()
+        );
+        LOGGER.info("Rate result: " + context.getErrorMessage());
+        resp.sendRedirect(req.getContextPath() + "rating?errorMessage=" + context.getErrorMessage() + "&group=" + groupId);
+        LOGGER.info("Send redirect to " + req.getContextPath() + "rating?errorMessage=" + context.getErrorMessage() + "&group=" + groupId);
     }
 }
