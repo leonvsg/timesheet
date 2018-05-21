@@ -21,9 +21,12 @@ public class Utils {
     }
 
     public static boolean isEmptyParams(String ... params){
-        for (String param: params)
+        for (String param: params){
+            if (param == null)
+                continue;
             if (!param.isEmpty())
                 return false;
+        }
         return true;
     }
 
@@ -36,7 +39,7 @@ public class Utils {
 
     public static boolean isNotEmptyParams(String ... params){
         for (String param: params)
-            if (param.isEmpty())
+            if (param == null || param.isEmpty())
                 return false;
         return true;
     }

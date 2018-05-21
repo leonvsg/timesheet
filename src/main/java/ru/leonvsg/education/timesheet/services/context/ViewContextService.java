@@ -5,6 +5,7 @@ import ru.leonvsg.education.timesheet.entities.*;
 import ru.leonvsg.education.timesheet.services.ServiceFactory;
 import ru.leonvsg.education.timesheet.services.Utils;
 import ru.leonvsg.education.timesheet.services.entity.*;
+import ru.leonvsg.education.timesheet.services.verification.AdaptiveHandler;
 import ru.leonvsg.education.timesheet.services.verification.Handler;
 
 import java.util.ArrayList;
@@ -86,27 +87,45 @@ public class ViewContextService {
     }
 
     public ViewContext postCourseViewContext(String token, String name, String description, Integer duration){
-        ContextBuilder contextBuilder = new ViewContextBuilder();
-        if (userService.verifyRole(token) != Role.ADMIN){
-            contextBuilder.setErrorMessage("InvalidPermission");
-            return contextBuilder.getResult();
+        ContextBuilder builder = new ViewContextBuilder();
+        Handler handler = new AdaptiveHandler(
+                ()->{
+                    if (userService.verifyRole(token) != Role.ADMIN){
+                        builder.setErrorMessage("PermissionDenied");
+                        return false;
+                    }
+                    return true;
+                }
+        );
+        handler.setNextHandler(new AdaptiveHandler(
+                ()->{
+                    if (name == null || name.isEmpty()) {
+                        builder.setErrorMessage("InvalidCourseName");
+                        return false;
+                    }
+                    return true;
+                }
+        )).setNextHandler(new AdaptiveHandler(
+                ()->{
+                    if (duration <= 0){
+                        builder.setErrorMessage("InvalidDuration");
+                        return false;
+                    }
+                    return true;
+                }
+        )).setNextHandler(new AdaptiveHandler(
+                ()->{
+                    if (!courseService.addCourse(name, description, duration)){
+                        builder.setErrorMessage("WTF???");
+                        return false;
+                    }
+                    return true;
+                }
+        ));
+        if (handler.handle()){
+            builder.setErrorMessage("Success");
         }
-        if (name == null || name.isEmpty()){
-            contextBuilder.setErrorMessage("InvalidCourseName");
-            return contextBuilder.getResult();
-        }
-        if (duration <= 0){
-            contextBuilder.setErrorMessage("InvalidDuration");
-            return contextBuilder.getResult();
-        }
-        if (courseService.addCourse(name, description, duration)){
-            contextBuilder.setErrorMessage("Success");
-            return contextBuilder.getResult();
-        }
-        else {
-            contextBuilder.setErrorMessage("WTF???");
-            return contextBuilder.getResult();
-        }
+        return builder.getResult();
     }
 
     public ViewContext getUserViewContext(String token, String id){
@@ -138,7 +157,7 @@ public class ViewContextService {
     public ViewContext postUserViewContext(String login, String password, String id, String name,
                                            String middlename, String surname, String token){
         ContextBuilder builder = new ViewContextBuilder();
-        Handler handler = new Handler(
+        Handler handler = new AdaptiveHandler(
                 ()->{
                     if (Utils.isEmptyParams(login, password, name, middlename, surname)){
                         builder.setErrorMessage("NothingToChange");
@@ -147,7 +166,7 @@ public class ViewContextService {
                     return true;
                 }
         );
-        handler.setNextHandler(new Handler(
+        handler.setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (id.isEmpty() || token == null) {
                         builder.setErrorMessage("InvalidUserId");
@@ -155,7 +174,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!password.isEmpty() && !userService.isValidPassword(password)){
                         builder.setErrorMessage("InvalidPassword");
@@ -163,7 +182,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!login.isEmpty() && !userService.isValidLogin(login)){
                         builder.setErrorMessage("InvalidLogin");
@@ -171,7 +190,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!login.isEmpty() && userService.isBusyLogin(login)){
                         builder.setErrorMessage("LoginIsBusy");
@@ -180,7 +199,7 @@ public class ViewContextService {
                     return true;
                 }
         ));
-        if (handler.verify()){
+        if (handler.handle()){
             try {
                 User user = userService.verifyRole(token) == Role.ADMIN ?
                         userService.getUser(Integer.valueOf(id)) : userService.authenticate(token);
@@ -217,8 +236,7 @@ public class ViewContextService {
     public ViewContext postUsersViewContext(String login, String password, String role, String name,
                                             String middlename, String surname, String token){
         ContextBuilder builder = new ViewContextBuilder();
-
-        Handler handler = new Handler(
+        Handler handler = new AdaptiveHandler(
                 ()->{
                     if (userService.verifyRole(token) != Role.ADMIN){
                         builder.setErrorMessage("PermissionDenied");
@@ -227,7 +245,7 @@ public class ViewContextService {
                     return true;
                 }
         );
-        handler.setNextHandler(new Handler(
+        handler.setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!userService.isValidPassword(password)) {
                         builder.setErrorMessage("InvalidPassword");
@@ -235,7 +253,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!userService.isValidRole(role)){
                         builder.setErrorMessage("InvalidRole");
@@ -243,7 +261,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!userService.isValidLogin(login)){
                         builder.setErrorMessage("InvalidLogin");
@@ -251,7 +269,7 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (userService.isBusyLogin(login)){
                         builder.setErrorMessage("LoginIsBusy");
@@ -259,16 +277,16 @@ public class ViewContextService {
                     }
                     return true;
                 }
-        )).setNextHandler(new Handler(
+        )).setNextHandler(new AdaptiveHandler(
                 ()->{
                     if (!userService.register(login, password, role, name, middlename, surname)){
                         builder.setErrorMessage("WTF???");
                         return false;
                     }
-                    return false;
+                    return true;
                 }
         ));
-        if (handler.verify()){
+        if (handler.handle()){
             builder.setErrorMessage("Success");
         }
         return builder.getResult();
