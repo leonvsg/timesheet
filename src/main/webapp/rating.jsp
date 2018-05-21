@@ -70,21 +70,22 @@
                         </c:forEach>
                     </table>
                 </div>
-
+                <c:if test="${param.group != null}">
                 <div class="panel panel-info">
-                    <div class="panel-heading collapsed-btn" data-toggle="collapse" href="#collapseGroups" aria-expanded="true" aria-controls="collapseGroups">
-                        <h4 class="panel-title">Rate</h4>
+                    <div class="panel-heading collapsed-btn colapsed" data-toggle="collapse" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">
+                        <h4 class="panel-title">Click to rate</h4>
                     </div>
-                    <div class="collapse in" id="collapseGroups">
+                    <div class="collapse" id="collapseGroups">
                         <form role="form" class="form-inline" action="${pageContext.request.contextPath}rating" method="post">
+                            <input name="group" value="<c:out value="${param.group}"/>" hidden/>
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 rate-col">
                                     <div class="input-group rating-input-group">
                                         <span class="input-group-addon rating-select-addon" id="student-addon">Student</span>
                                         <select name="student" class="form-control" id="student" aria-describedby="student-addon">
                                             <c:forEach items="${context.getUsers()}" var="user">
                                                 <c:if test="${user.getRole().equals(\"STUDENT\")}">
-                                                <option>
+                                                <option value="<c:out value="${user.getId()}"/>">
                                                     <c:out value="${user.getName()}"/> <c:out value="${user.getSurname()}"/>
                                                 </option>
                                                 </c:if>
@@ -92,19 +93,19 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-5">
+                                <div class="col-lg-5 rate-col">
                                     <div class="input-group rating-input-group">
                                         <span class="input-group-addon rating-select-addon" id="lesson-addon">Lesson</span>
                                         <select name="lesson" class="form-control" id="lesson" aria-describedby="lesson-addon">
                                             <c:forEach items="${context.getLessons()}" var="lesson">
-                                                    <option>
+                                                    <option value="<c:out value="${lesson.getId()}"/>">
                                                         <c:out value="${lesson.getDate()}"/>
                                                     </option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 rate-col">
                                     <div class="input-group rating-input-group">
                                         <span class="input-group-addon rating-select-addon" id="value-addon">Value</span>
                                         <input type="number" id="value" name="value" value="0" min="0" max="100" class="form-control" aria-describedby="value-addon">
@@ -112,23 +113,21 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4">
-
+                                <div class="col-lg-10 rate-col">
+                                    <div class="input-group input-group-textarea-holder">
+                                        <textarea class="input-group-textarea form-control" placeholder="Description" rows="1" id="description" name="description"></textarea>
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-
-                                </div>
-                                <div class="col-lg-4">
-
+                                <div class="col-lg-2 rate-col">
+                                    <div class="input-group input-group-textarea-holder">
+                                        <button type="submit" class="btn btn-default btn-rate">Rate</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-
+                </c:if>
             </main><!-- .content -->
         </div><!-- .container-->
     </div><!-- .middle-->

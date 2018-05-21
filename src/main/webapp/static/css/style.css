@@ -119,6 +119,27 @@
 	width: 100%;
 }
 
+.input-group-textarea{
+	resize: none;
+	border-radius: 4px!important;
+}
+
+.row{
+	margin: 0px;
+}
+
+.rate-col{
+	padding: 4px;
+}
+
+.input-group-textarea-holder{
+	width: 100%;
+}
+
+.btn-rate{
+	width: 100%;
+}
+
 .lessons-title {
 	display: inline-block;
 	width: 70%;
