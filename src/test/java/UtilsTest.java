@@ -1,14 +1,11 @@
 import org.junit.Before;
 import org.junit.Test;
-import ru.leonvsg.education.timesheet.services.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.leonvsg.education.timesheet.services.Utils.*;
@@ -46,25 +43,25 @@ public class UtilsTest {
     }
 
     @Test
-    public void isEmptyParamsTest(){
+    public void isEmptyParamsTest() {
         assertTrue(isEmptyParams(emptyParams));
         assertFalse(isEmptyParams(notEmptyParams));
     }
 
     @Test
-    public void isNotEmptyParamsTest(){
+    public void isNotEmptyParamsTest() {
         assertTrue(isNotEmptyParams(notEmptyParams));
         assertFalse(isNotEmptyParams(emptyParams));
     }
 
     @Test
-    public void isNullParamsTest(){
+    public void isNullParamsTest() {
         assertTrue(isNullParams(nullParams));
         assertFalse(isNullParams(notNullParams));
     }
 
     @Test
-    public void isNotNullParamsTest(){
+    public void isNotNullParamsTest() {
         assertTrue(isNotNullParams(notNullParams));
         assertFalse(isNotNullParams(nullParams));
     }

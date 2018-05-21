@@ -4,7 +4,7 @@ public class AdaptiveHandler extends Handler {
 
     private Checker checker;
 
-    public AdaptiveHandler(Checker checker){
+    public AdaptiveHandler(Checker checker) {
         this.checker = checker;
     }
 

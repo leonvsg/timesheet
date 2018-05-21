@@ -1,6 +1,7 @@
 package ru.leonvsg.education.timesheet.services;
 
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class Utils {
@@ -21,7 +22,7 @@ public class Utils {
     }
 
     public static boolean isEmptyParams(String ... params){
-        for (String param: params){
+        for (String param : params) {
             if (param == null)
                 continue;
             if (!param.isEmpty())
