@@ -2,7 +2,6 @@ package ru.leonvsg.education.timesheet.controllers.filters;
 
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.services.entity.UserService;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -8,7 +8,6 @@ import ru.leonvsg.education.timesheet.entities.Course;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.User;
 import ru.leonvsg.education.timesheet.services.Service;
-
 import java.util.List;
 
 public class GroupService implements Service {

@@ -7,7 +7,6 @@ import ru.leonvsg.education.timesheet.dao.jdbc.JDBCDAOFactory;
 import ru.leonvsg.education.timesheet.entities.Group;
 import ru.leonvsg.education.timesheet.entities.Rating;
 import ru.leonvsg.education.timesheet.services.Service;
-
 import java.util.List;
 
 public class RatingService implements Service {

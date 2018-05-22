@@ -7,7 +7,6 @@ import ru.leonvsg.education.timesheet.services.Utils;
 import ru.leonvsg.education.timesheet.services.entity.*;
 import ru.leonvsg.education.timesheet.services.verification.AdaptiveHandler;
 import ru.leonvsg.education.timesheet.services.verification.Handler;
-
 import java.util.ArrayList;
 import java.util.List;
 

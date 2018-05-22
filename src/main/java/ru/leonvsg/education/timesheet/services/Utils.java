@@ -1,7 +1,6 @@
 package ru.leonvsg.education.timesheet.services;
 
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class Utils {

@@ -1,6 +1,5 @@
 package ru.leonvsg.education.timesheet.dao.jdbc;
 
-
 import org.apache.log4j.Logger;
 import ru.leonvsg.education.timesheet.connections.ConnectionManager;
 import ru.leonvsg.education.timesheet.dao.basic.GroupDAO;
