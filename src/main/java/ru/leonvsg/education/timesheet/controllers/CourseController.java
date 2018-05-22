@@ -67,11 +67,11 @@ public class CourseController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         LOGGER.info("Received POST request with params: " + Utils.requestParamsToString(req));
-        String name = req.getParameter("name");
-        String description = req.getParameter("description");
-        Integer duration = Integer.valueOf(req.getParameter("duration"));
-        String token = req.getSession().getAttribute("token").toString();
-        ViewContext context = viewContextService.postCourseViewContext(token, name, description, duration);
+        ViewContext context = viewContextService.postCourseViewContext(
+                req.getSession().getAttribute("token").toString(),
+                req.getParameter("name"),
+                req.getParameter("description"),
+                req.getParameter("duration"));
         String errorMessage = context.getErrorMessage();
         resp.sendRedirect(req.getContextPath() + "course?errorMessage=" + errorMessage);
         LOGGER.info("Add course result: " + errorMessage);

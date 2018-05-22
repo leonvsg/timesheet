@@ -86,7 +86,7 @@ public class ViewContextService {
         return contextBuilder.getResult();
     }
 
-    public ViewContext postCourseViewContext(String token, String name, String description, Integer duration){
+    public ViewContext postCourseViewContext(String token, String name, String description, String duration){
         ContextBuilder builder = new ViewContextBuilder();
         Handler handler = new AdaptiveHandler(
                 ()->{
@@ -107,15 +107,20 @@ public class ViewContextService {
                 }
         )).setNextHandler(new AdaptiveHandler(
                 ()->{
-                    if (duration <= 0){
+                    try {
+                        if (Integer.valueOf(duration) <= 0){
+                            builder.setErrorMessage("InvalidDuration");
+                            return false;
+                        }
+                        return true;
+                    } catch (Exception e){
                         builder.setErrorMessage("InvalidDuration");
                         return false;
                     }
-                    return true;
                 }
         )).setNextHandler(new AdaptiveHandler(
                 ()->{
-                    if (!courseService.addCourse(name, description, duration)){
+                    if (!courseService.addCourse(name, description, Integer.valueOf(duration))){
                         builder.setErrorMessage("WTF???");
                         return false;
                     }
