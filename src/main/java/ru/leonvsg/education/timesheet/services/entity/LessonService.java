@@ -22,6 +22,10 @@ public class LessonService implements Service {
         lessonDAO = daoFactory.getDAO(Lesson.class);
     }
 
+    public Lesson getLesson(Integer id){
+        return lessonDAO.read(id);
+    }
+
     public List<Lesson> getLessons(Group group){
         return lessonDAO.getLessonsByGroup(group);
     }

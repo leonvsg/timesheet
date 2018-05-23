@@ -29,4 +29,10 @@ public class RatingService implements Service {
     public List<Rating> getRatingsByGroup(Integer groupId){
         return ratingDAO.getRatingByGroup(groupId);
     }
+
+    public boolean rate(Integer userId, Integer lessonId, Integer value, String description){
+        return ratingDAO.create(
+                new Rating(null, userId, lessonId, value, description)
+        );
+    }
 }

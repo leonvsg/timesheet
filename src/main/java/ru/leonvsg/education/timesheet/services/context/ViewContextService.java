@@ -9,6 +9,7 @@ import ru.leonvsg.education.timesheet.services.verification.AdaptiveHandler;
 import ru.leonvsg.education.timesheet.services.verification.Handler;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ViewContextService {
 
@@ -299,7 +300,66 @@ public class ViewContextService {
     public ViewContext postRatingViewContext(String studentId, String lessonId, String rateValue,
                                              String rateDescription, String groupId, String token) {
         ContextBuilder builder = new ViewContextBuilder();
-        //TODO: POST rating logic
+        Handler handler = new AdaptiveHandler(
+                ()->{
+                    if (userService.verifyRole(token) != Role.LECTOR){
+                        builder.setErrorMessage("PermissionDenied");
+                        return false;
+                    }
+                    return true;
+                }
+        );
+        handler.setNextHandler(new AdaptiveHandler(
+                ()->{
+                    try{
+                        if (lessonService.getLesson(Integer.valueOf(lessonId)) == null){
+                            builder.setErrorMessage("InvalidLesson");
+                            return false;
+                        }
+                        return true;
+                    }catch (Exception e){
+                        builder.setErrorMessage("InvalidLesson");
+                        return false;
+                    }
+                }
+        )).setNextHandler(new AdaptiveHandler(
+                ()->{
+                    try{
+                        if (userService.getUser(Integer.valueOf(studentId)) == null){
+                            builder.setErrorMessage("InvalidUser");
+                            return false;
+                        }
+                        return true;
+                    }catch (Exception e){
+                        builder.setErrorMessage("InvalidUser");
+                        return false;
+                    }
+                }
+        )).setNextHandler(new AdaptiveHandler(
+                ()->{
+                    try{
+                        if (Integer.valueOf(rateValue) < 0 || Integer.valueOf(rateValue)>100){
+                            builder.setErrorMessage("InvalidRatingValue");
+                            return false;
+                        }
+                        return true;
+                    }catch (Exception e){
+                        builder.setErrorMessage("InvalidRatingValue");
+                        return false;
+                    }
+                }
+        )).setNextHandler(new AdaptiveHandler(
+                ()->{
+                    if (!ratingService.rate(Integer.valueOf(studentId), Integer.valueOf(lessonId), Integer.valueOf(rateValue), rateDescription)){
+                        builder.setErrorMessage("WTF???");
+                        return false;
+                    }
+                    return true;
+                }
+        ));
+        if (handler.handle()){
+            builder.setErrorMessage("Success");
+        }
         return builder.getResult();
     }
 }

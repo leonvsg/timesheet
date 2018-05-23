@@ -10,7 +10,7 @@ public class Rating implements Entity {
     private Integer value;
     private String description;
 
-    public Rating(int id, int userId, int lessonId, int value, String description) {
+    public Rating(Integer id, Integer userId, Integer lessonId, Integer value, String description) {
         this.id = id;
         this.userId = userId;
         this.lessonId = lessonId;
@@ -18,7 +18,7 @@ public class Rating implements Entity {
         this.description = description;
     }
 
-    public Rating(int id, User user, Lesson lesson, int value, String description) {
+    public Rating(Integer id, User user, Lesson lesson, Integer value, String description) {
         this.id = id;
         this.user = user;
         this.userId = user.getId();
