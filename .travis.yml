@@ -14,3 +14,12 @@ branches:
 
 install:
   - gradle wrapper --gradle-version 4.4
+
+deploy:
+  provider: azure_web_apps
+  username: stc9
+  password: stc9educationapp
+  site: stc9educationapp
+  skip_cleanup: true
+  verbose: true
+
