@@ -16,7 +16,7 @@ install:
   - gradle wrapper --gradle-version 4.4
 
 script:
-  - ./gradlew build
+  - ./gradlew war
 
 deploy:
   provider: azure_web_apps
@@ -25,4 +25,5 @@ deploy:
   site: stc9academy
   slot: stc9academy-test
   verbose: true
+  skip_cleanup: true
 
