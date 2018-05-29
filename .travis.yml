@@ -18,8 +18,8 @@ install:
 deploy:
   provider: azure_web_apps
   username: stc9
-  password: stc9educationapp
-  site: stc9educationapp
-  skip_cleanup: true
+  password: stc9academy
+  site: stc9academy
+  slot: stc9academy-test
   verbose: true
 
