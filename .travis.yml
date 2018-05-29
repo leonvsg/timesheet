@@ -15,8 +15,18 @@ branches:
 install:
   - gradle wrapper --gradle-version 4.4
 
+before_script:
+  - echo "Starting build"
 script:
   - ./gradlew war
+after_script:
+  - echo "Script finished"
+after_success:
+  - echo "Build was successful. $TRAVIS_TEST_RESULT"
+  - ls -l $TRAVIS_BUILD_DIR/target
+  - ./ci/deploy.sh javahw
+after_failure:
+  - echo "Build was failed"
 
 deploy:
   provider: azure_web_apps
