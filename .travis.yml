@@ -22,4 +22,5 @@ deploy:
   site: stc9academy
   slot: stc9academy-test
   verbose: true
+  skip_cleanup: true
 
