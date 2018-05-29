@@ -16,8 +16,7 @@ install:
   - gradle wrapper --gradle-version 4.4
 
 script:
-  - ./gradlew run
-  - :war
+  - ./gradlew build
 
 deploy:
   provider: azure_web_apps
