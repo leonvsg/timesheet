@@ -23,8 +23,8 @@ after_script:
   - echo "Script finished"
 after_success:
   - echo "Build was successful. $TRAVIS_TEST_RESULT"
-  - ls -l $TRAVIS_BUILD_DIR/target
-  - ./ci/deploy.sh javahw
+  - ls -l $TRAVIS_BUILD_DIR/
+  - ./ci/deploy.sh stc9academy
 after_failure:
   - echo "Build was failed"
 
