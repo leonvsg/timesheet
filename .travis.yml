@@ -20,6 +20,5 @@ deploy:
   username: stc9
   password: stc9academy
   site: stc9academy
-  slot: stc9academy-test
   verbose: true
 
