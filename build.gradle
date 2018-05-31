@@ -1,6 +1,18 @@
 group 'ru.leonvsg.education'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+    }
+}
+
+apply plugin: "org.sonarqube"
 apply plugin: 'java'
 apply plugin: 'war'
 
@@ -25,5 +37,5 @@ dependencies {
 }
 
 war {
-    archiveName = 'academy.war'
+    archiveName = 'timesheet.war'
 }
